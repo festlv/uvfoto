@@ -1,1 +1,4 @@
 ~$*
+*.pyc
+avr-firmware/build/*
+avr-firmware/.sconsign.dblite
