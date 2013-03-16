@@ -1,0 +1,69 @@
+from build_utils import read_fuses, write_fuses, upload_hex
+
+Import('env')
+
+# Set environment for AVR-GCC.
+env['CXX'] = 'avr-gcc'
+env['CPPPATH'] = ['/usr/avr/include/', '.']
+env['OBJCOPY'] = 'avr-objcopy'
+env['SIZE'] = 'avr-size'
+env['OBJDUMP'] = 'avr-objdump'
+env.Append(CCFLAGS = '-Os -Wall -Werror')
+
+# Declare some variables about microcontroller.
+# Microcontroller type.
+DEVICE = 'atmega128'
+# Microcontroller frequency.
+CPU_FREQUENCY = '16000000UL' # Hz
+
+
+# Set environment for an Atmel AVR Atmega 328p microcontroller.
+# Create and initialize the environment.
+env.Append(CCFLAGS = '-mmcu=' + DEVICE)
+env.Append(LINKFLAGS = '-mmcu=' + DEVICE)
+env.Append(CPPDEFINES = 'F_CPU=' + CPU_FREQUENCY)
+env.Append(LINKFLAGS = '-Wl,-u,vfprintf -lprintf_flt -lm')
+# Define target name.
+TARGET = 'main'
+
+# Define source file.
+sources = [Glob('*.cpp'), Glob('*/*.cpp') ]
+
+# Build the program.
+# Default() is used so that when running scons only sources are 
+# compiled and linked- no other commands (see below) are run
+
+Default(env.Program(target = TARGET + '.elf', source = sources))
+
+# Create hex binary file.
+Default(env.Command(TARGET + '.hex', TARGET + '.elf', 
+    env['OBJCOPY'] + ' -O ihex $SOURCE $TARGET'))
+
+# Compute memory usage.
+Default(env.Command(None, TARGET + '.elf',
+    env['SIZE'] + ' -C --mcu=' + DEVICE + ' $SOURCE'))
+
+#allows dumping assembly
+#
+c = env.Command(TARGET+".asm", TARGET+".hex", 
+    "%(cmd)s -m avr -D $SOURCE --no-show-raw-insn > $TARGET" % {'cmd':env['OBJDUMP']}) 
+
+env.Alias('disassemble',c)
+if GetOption('debug_build'):
+    s = env.Command(None, TARGET+".elf", 
+        "simulavr -d %s -g" % DEVICE)
+    env.Alias('run-sim', s) 
+# avrdude settings
+env.Append(AVRDUDE_BASE = 'avrdude -c usbasp -p %s ' % (DEVICE))
+
+env.Append(LFUSE = '0xff')
+env.Append(HFUSE = '0xd9')
+env.Append(EFUSE = '0xff')
+
+# avrdude command wrappers
+
+env.Alias('read-fuses', env.Command('read-fuses.dummy', [], read_fuses))
+
+env.Alias('write-fuses', env.Command('write-fuses.dummy', [], write_fuses))
+upload = env.Alias('upload', TARGET+'.hex', upload_hex);
+AlwaysBuild(upload)

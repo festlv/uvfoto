@@ -1,0 +1,3 @@
+*.pyc
+build/*
+.sconsign.dblite
