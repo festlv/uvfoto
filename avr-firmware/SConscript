@@ -8,7 +8,7 @@ env['CPPPATH'] = ['/usr/avr/include/', '.']
 env['OBJCOPY'] = 'avr-objcopy'
 env['SIZE'] = 'avr-size'
 env['OBJDUMP'] = 'avr-objdump'
-env.Append(CCFLAGS = '-Os -Wall -Werror')
+env.Append(CCFLAGS = '-Os -Wall -Werror -fno-exceptions')
 
 # Declare some variables about microcontroller.
 # Microcontroller type.

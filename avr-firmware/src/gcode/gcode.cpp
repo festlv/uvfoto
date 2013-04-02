@@ -1,7 +1,6 @@
 #include "gcode/gcode.h"
 #include "uart/uart.h"
 #include "stepper/stepper.h"
-#include <string.h>
 
 
 static char command_buffer[500];

@@ -52,12 +52,3 @@ char uart_getchar_noblock() {
     else
         return 0;
 }
-
-void uart_putstring(char* c) {
-    int i=0;
-    while (c[i]!=0) {
-        uart_putchar(c[i], NULL);
-        i++;
-    }
-    
-}
