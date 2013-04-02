@@ -35,7 +35,7 @@ static const float OVF_S = F_CPU / 256.0;
 static volatile uint32_t num_ovfs=0;
 static volatile uint32_t next_step_ovf=0;
 volatile int32_t delta_steps;
-
+static volatile uint8_t move_to_home = 0;
 static volatile uint8_t is_moving = 0;
 
 void stepper_init() {
@@ -74,24 +74,24 @@ void stepper_step_backward() {
 ISR(TIMER0_OVF_vect) {
     //this is executed about once every 16 us
     num_ovfs++;
-    if (is_moving && num_ovfs>=next_step_ovf) {
-        if (delta_steps>0) {
+    if ((is_moving) && num_ovfs>=next_step_ovf) {
+        if (delta_steps>0 && !move_to_home) {
 
             stepper_step_forward();
             delta_steps--;
-        } else if (delta_steps<0) {
-             
+        } else if (delta_steps<0 || move_to_home) {
             stepper_step_backward();
             delta_steps++;
+            if (!(HOME_POS_PIN & (1<<HOME_POS_BIT))) {
+                is_moving=0;
+                move_to_home=0;
+            }
         } else {
             is_moving=0;
         }
         current_speed = MIN(current_speed + current_acceleration* (num_ovfs / OVF_S), 
                 target_speed);
         next_step_ovf = num_ovfs + lround(OVF_S * (1/(current_speed*STEPS_PER_UNIT)));
-        //printf("n: %ld\n", next_step_ovf);
-        //printf("c: %ld\n", num_ovfs);
-        //printf("s: %f\n", (double)speed);
     }
     
 }
@@ -124,10 +124,14 @@ void stepper_move_position_blocking(float position, float speed,
 }
 
 void stepper_move_to_origin() {
-    if (HOME_POS_PIN & (1<<HOME_POS_BIT)) {
-        while ((HOME_POS_PIN & (1<<HOME_POS_BIT))) {
-            stepper_set_position(0.1);
-            stepper_move_position_blocking(0.0);
-        }
-    }
+   move_to_home = 1; 
+   num_ovfs = 0;
+   next_step_ovf = 0;
+   current_speed = START_SPEED;
+   target_speed = MAX_SPEED;
+   current_acceleration = MAX_ACCELERATION; 
+   is_moving = 1;
+   while (is_moving) {
+
+   }
 }
