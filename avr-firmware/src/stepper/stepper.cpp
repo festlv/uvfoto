@@ -41,7 +41,9 @@ static volatile uint8_t is_moving = 0;
 void stepper_init() {
     STEPPER_DDR |= STEP_MASK;
     STEPPER_PORT &= ~STEP_MASK;
-    DDRD |= 1<<PD0;  
+    HOME_POS_DDR &= ~(1<<HOME_POS_BIT);
+    HOME_POS_PORT |= (1<<HOME_POS_BIT);
+    
     //init timers
     TCCR0 |= (1<<CS00);//prescaler 8
     TIMSK |= (1<<TOIE0);//enable overflow interrupt 
@@ -111,4 +113,21 @@ void stepper_move_position(float position, float speed, float acceleration) {
     current_acceleration = MIN(acceleration, MAX_ACCELERATION); 
     
     is_moving = 1;
+}
+
+void stepper_move_position_blocking(float position, float speed,
+        float acceleration) {
+    stepper_move_position(position, speed, acceleration);
+    while (is_moving) {
+
+    }
+}
+
+void stepper_move_to_origin() {
+    if (HOME_POS_PIN & (1<<HOME_POS_BIT)) {
+        while ((HOME_POS_PIN & (1<<HOME_POS_BIT))) {
+            stepper_set_position(0.1);
+            stepper_move_position_blocking(0.0);
+        }
+    }
 }

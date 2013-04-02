@@ -2,6 +2,7 @@
 #include <util/delay.h>
 #include "stepper/stepper.h"
 #include "uart/uart.h"
+#include "gcode/gcode.h"
 
 void init() {
     uart_init();
@@ -11,8 +12,7 @@ void init() {
 
 int main(void) {
     init();
-    stepper_move_position(-90.0, 5.0);    
     while (1) {
-        
+        gcode_step();        
     }
 }

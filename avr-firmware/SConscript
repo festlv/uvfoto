@@ -22,7 +22,7 @@ CPU_FREQUENCY = '16000000UL' # Hz
 env.Append(CCFLAGS = '-mmcu=' + DEVICE)
 env.Append(LINKFLAGS = '-mmcu=' + DEVICE)
 env.Append(CPPDEFINES = 'F_CPU=' + CPU_FREQUENCY)
-env.Append(LINKFLAGS = '-Wl,-u,vfprintf -lprintf_flt -lm')
+env.Append(LINKFLAGS = '-Wl,-u,vfprintf -lprintf_flt -lm -Wl,-u,vfscanf -lscanf_flt -lm')
 # Define target name.
 TARGET = 'main'
 

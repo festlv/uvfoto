@@ -1,0 +1,15 @@
+env = Environment()
+env["CPPUTEST_HOME"] = env.Dir("#cpputest/")
+env["CPP_PLATFORM"] = "Gcc"
+env.Append(CPPFLAGS = "-I%s/include " % env["CPPUTEST_HOME"])
+env.Append(CPPFLAGS = "-I%s/ " % env.Dir("#src/"))
+
+env.Append(LINKFLAGS= "-L%s/lib -lCppUTest -lCppUTestExt " % env["CPPUTEST_HOME"])
+env.Append(LINKFLAGS = '-g ')
+env.Append(CPPFLAGS = '-g ')
+env.Append(LINKFLAGS = '-lstdc++')
+
+sources = [env.Glob("*.cpp"),]
+target = "AllTests"
+
+env.Program(target, sources)

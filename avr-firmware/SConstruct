@@ -17,5 +17,6 @@ else:
 
 SConscript(dirs='.', src_dir='src',
            variant_dir=variant_dir,
-           duplicate=True,
-           exports="env")
+           duplicate=True, exports="env")
+
+SConscript(dirs='test', src_dir='test/src', variant_dir = 'test/build',)

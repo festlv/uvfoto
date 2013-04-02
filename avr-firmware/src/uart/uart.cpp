@@ -9,9 +9,11 @@
 #include <util/setbaud.h>
 
 FILE *uart_output = fdevopen(uart_putchar, NULL);
+//FILE *uart_input = fdevopen(uart_getchar, NULL);
 //FILE uart_input = FDEV_SETUP_STREAM(NULL, uart_getchar, _FDEV_SETUP_READ);
 
 //FILE uart_str = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
+
 
 
 /* http://www.cs.mun.ca/~rod/Winter2007/4723/notes/serial/serial.html */
@@ -29,6 +31,7 @@ void uart_init(void) {
     UCSR0C = _BV(UCSZ01) | _BV(UCSZ00); /* 8-bit data */ 
     UCSR0B = _BV(RXEN0) | _BV(TXEN0);   /* Enable RX and TX */    
     stdout = uart_output;
+ //   stdin = uart_input;
 }
 
 int uart_putchar(char c, FILE* f) {
@@ -37,11 +40,18 @@ int uart_putchar(char c, FILE* f) {
     return 0;
 }
 
-char uart_getchar(FILE* f) {
+int uart_getchar(FILE* f) {
     loop_until_bit_is_set(UCSR0A, RXC0);
     return UDR0;
 }
 
+char uart_getchar_noblock() {
+    if (UCSR0A & (1 << RXC0)) {
+        return UDR0;
+    }
+    else
+        return 0;
+}
 
 void uart_putstring(char* c) {
     int i=0;
