@@ -1,3 +1,0 @@
-[submodule "avr-firmware/cpputest"]
-	path = avr-firmware/cpputest
-	url = https://github.com/cpputest/cpputest
