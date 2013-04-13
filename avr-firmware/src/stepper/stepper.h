@@ -14,6 +14,8 @@
 #define DEFAULT_SPEED 1.0 
 #define MAX_SPEED 5.0 
 #define START_SPEED 0.1
+#define HOMING_SPEED 1.0
+
 
 #define STEPPER_PORT PORTB
 #define STEPPER_DDR DDRB

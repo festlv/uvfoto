@@ -128,7 +128,7 @@ void stepper_move_to_origin() {
    num_ovfs = 0;
    next_step_ovf = 0;
    current_speed = START_SPEED;
-   target_speed = MAX_SPEED;
+   target_speed = HOMING_SPEED;
    current_acceleration = MAX_ACCELERATION; 
    is_moving = 1;
    while (is_moving) {
