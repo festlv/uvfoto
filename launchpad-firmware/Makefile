@@ -1,0 +1,190 @@
+
+#Taget Binary Name
+TARGET      = main
+
+# List all the source files here
+SOURCES    += main.c
+SOURCES    += stellariscommon.c
+SOURCES    += startup.c
+
+#SOURCES  = $(wildcard src/*.c)
+
+# Includes are located in the Include directory
+INCLUDES    = -Isrc/include
+
+# Path to the root of your ARM toolchain
+
+# Path to the root of your StellarisWare folder
+SW_DIR      = /opt/tivaware/
+
+# Location of a loader script, doesnt matter which one, they're the same
+LD_SCRIPT   = lm4f120h5qr.ld
+
+# Object File Directory, keeps things tidy
+OBJECTS     = $(patsubst %.o, .obj/%.o,$(SOURCES:.c=.o))
+ASMS        = $(patsubst %.s, .obj/%.s,$(SOURCES:.c=.s))
+
+# FPU Type
+#FPU         = hard
+FPU         = softfp
+
+# Remove # to enable verbose
+VERBOSE     = 1
+
+
+# Flag Definitions
+###############################################################################
+CFLAGS     += -mthumb
+CFLAGS     += -mcpu=cortex-m4
+CFLAGS     += -mfloat-abi=$(FPU)
+CFLAGS     += -mfpu=fpv4-sp-d16
+CFLAGS     += -O0
+CFLAGS     += -ffunction-sections
+CFLAGS     += -fdata-sections
+CFLAGS     += -MD -g
+CFLAGS     += -std=c99
+CFLAGS     += -Wall
+CFLAGS     += -pedantic
+CFLAGS     += -DPART_TM4C1233H6PM
+CFLAGS     += -Dgcc
+CFLAGS     += -DTARGET_IS_BLIZZARD_RA1
+CFLAGS     += -fsingle-precision-constant
+CFLAGS     += -I$(SW_DIR)/driverlib/ -I$(SW_DIR) $(INCLUDES)
+
+ifeq ($(FPU),hard)
+	LIBGCC  = $(TOOL)/lib/gcc/arm-none-eabi/4.6.2/thumb/cortex-m4/float-abi-hard/fpuv4-sp-d16/libgcc.a
+	LIBM    = $(TOOL)/arm-none-eabi/lib/thumb/cortex-m4/float-abi-hard/fpuv4-sp-d16/libm.a
+	LIBC    = $(TOOL)/arm-none-eabi/lib/thumb/cortex-m4/float-abi-hard/fpuv4-sp-d16/libc.a
+	DRIVER_LIB	= $(SW_DIR)/driverlib/gcc-cm4f-hard/libdriver-cm4f-hard.a
+else
+
+	LIBGCC  = ${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
+	LIBM    = ${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
+	LIBC    = ${shell ${CC} ${CFLAGS} -print-file-name=libc.a}
+	
+	DRIVER_LIB	= $(SW_DIR)/driverlib/gcc/libdriver.a
+endif
+
+LIBS        = '$(LIBM)' '$(LIBC)' '$(LIBGCC)' '$(DRIVER_LIB)'
+
+LDFLAGS    += -T $(LD_SCRIPT)
+LDFLAGS    += --entry ResetISR
+LDFLAGS    += --gc-sections
+LDFLAGS    += -Map .obj/$(TARGET).map
+LDFLAGS    += --cref -g
+#LDFLAGS    += -nostdlib
+###############################################################################
+
+
+# Tool Definitions
+###############################################################################
+CC          = arm-none-eabi-gcc
+LD          = arm-none-eabi-ld
+AR          = arm-none-eabi-ar
+AS          = arm-none-eabi-as
+NM          = arm-none-eabi-nm
+OBJCOPY     = arm-none-eabi-objcopy
+OBJDUMP     = arm-none-eabi-objdump
+RANLIB      = arm-none-eabi-ranlib
+STRIP       = arm-none-eabi-strip
+SIZE        = arm-none-eabi-size
+READELF     = arm-none-eabi-readelf
+DEBUG       = arm-none-eabi-gdb
+FLASH       = lm4flash
+CP          = cp -p
+RM          = rm -rf
+MV          = mv
+MKDIR       = mkdir -p
+###############################################################################
+
+
+# Command Definitions, Leave it alone unless you hate yourself.
+###############################################################################
+all: dirs bin/$(TARGET).bin size
+
+asm: $(ASMS)
+
+# Compiler Command
+.obj/%.o: src/%.c
+	@if [ 'x${VERBOSE}' = x ];                                                \
+	 then                                                                     \
+	     echo "CC           ${<}";                                            \
+	 else                                                                     \
+	     echo $(CC) -c $(CFLAGS) -o $@ $<;                                    \
+	 fi
+	@$(MKDIR) $(dir $@)
+	@$(CC) -c $(CFLAGS) -o $@ $<
+
+# Create Assembly
+.obj/%.s: src/%.c
+	@if [ 'x${VERBOSE}' = x ];                                                \
+	 then                                                                     \
+	     echo "CC -S        ${<}";                                            \
+	 else                                                                     \
+	     echo $(CC) -S -c $(CFLAGS) -o $@ $<;                                 \
+	 fi
+	@$(MKDIR) $(dir $@)
+	@$(CC) -S -c $(CFLAGS) -o $@ $<
+
+# Linker Command
+.obj/$(TARGET).out: $(OBJECTS)
+	@if [ 'x${VERBOSE}' = x ];                                                \
+	 then                                                                     \
+	     echo "LD           $@";                                              \
+	 else                                                                     \
+	     echo $(LD) $(LDFLAGS) -o $@ $(OBJECTS) $(LIBS);\
+	 fi
+	@$(LD) $(LDFLAGS) -o $@ $(OBJECTS) $(LIBS);
+
+# Create the Final Image
+bin/$(TARGET).bin: .obj/$(TARGET).out
+	@if [ 'x${VERBOSE}' = x ];                                                \
+	 then                                                                     \
+	     echo "OBJCOPY      ${<} $@";                                         \
+	 else                                                                     \
+	     echo $(OBJCOPY) -O binary .obj/$(TARGET).out bin/$(TARGET).bin;      \
+	 fi
+	@$(OBJCOPY) -O binary .obj/$(TARGET).out bin/$(TARGET).bin
+
+# Calculate the Size of the Image
+size: .obj/$(TARGET).out
+	@if [ 'x${VERBOSE}' = x ];                                                \
+	 then                                                                     \
+	     echo "SIZE      ${<}";                                               \
+	 else                                                                     \
+	     echo $(SIZE) $<;                                                     \
+	 fi
+	@$(SIZE) $<
+
+
+# Create the Directories we need
+dirs:
+	@$(MKDIR) src/include
+	@$(MKDIR) bin
+	@$(MKDIR) .obj
+
+# Cleanup
+clean:
+	-$(RM) .obj/*
+	-$(RM) bin/*
+
+# Flash The Board
+install: all
+	@if [ 'x${VERBOSE}' = x ];                                                \
+	 then                                                                     \
+	     echo "  FLASH    bin/$(TARGET).bin";                                 \
+	 else                                                                     \
+	     echo $(FLASH) bin/$(TARGET).bin;                                \
+	 fi
+	$(FLASH) bin/$(TARGET).bin
+
+icdi: all
+	openocd -f LM4F120XL.cfg
+
+
+gdb: all
+	$(DEBUG) .obj/$(TARGET).out
+# Redo, Clean->Compile Fresh Image, and Install It.
+redo: clean all install
+###############################################################################
+
