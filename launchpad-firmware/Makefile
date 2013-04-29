@@ -4,13 +4,13 @@ TARGET      = main
 
 # List all the source files here
 SOURCES    += main.c
-SOURCES    += stellariscommon.c
 SOURCES    += startup.c
+SOURCES	   += motor.c
 
 #SOURCES  = $(wildcard src/*.c)
 
 # Includes are located in the Include directory
-INCLUDES    = -Isrc/include
+INCLUDES    = -Isrc/
 
 # Path to the root of your ARM toolchain
 

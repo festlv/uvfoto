@@ -1,0 +1,8 @@
+function freq(rps)
+dt = 1/rps * 0.5
+numbits = 256*8
+retval = 1/(dt*(1/numbits))
+
+endfunction
+
+freq(200)
