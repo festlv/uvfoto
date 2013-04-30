@@ -40,4 +40,6 @@ extern void stepper_move_position_blocking(float position, float speed=DEFAULT_S
         float acceleration=DEFAULT_ACCELERATION);
 extern void stepper_move_to_origin();
 
+extern void stepper_step_backward();
+extern void stepper_step_forward();
 #endif
