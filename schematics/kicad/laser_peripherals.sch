@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date trešdiena, 2013. gada  1. maijs, plkst. 00 un 49
+EESchema Schematic File Version 2  date trešdiena, 2013. gada  1. maijs, plkst. 01 un 16
 LIBS:power
 LIBS:device
 LIBS:transistors
