@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date trešdiena, 2013. gada  1. maijs, plkst. 00 un 49
+EESchema Schematic File Version 2  date trešdiena, 2013. gada  1. maijs, plkst. 01 un 08
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -422,8 +422,6 @@ Connection ~ 3150 5850
 Connection ~ 2750 6850
 Wire Wire Line
 	8350 6550 8350 6500
-Text Label 3700 1800 0    60   ~ 0
-TEST
 Connection ~ 5450 1550
 Connection ~ 4550 1450
 Connection ~ 4050 1450
@@ -556,7 +554,7 @@ L R R3
 U 1 1 51804950
 P 4300 1450
 F 0 "R3" V 4380 1450 40  0000 C CNN
-F 1 "R" V 4307 1451 40  0000 C CNN
+F 1 "2K" V 4307 1451 40  0000 C CNN
 F 2 "~" V 4230 1450 30  0000 C CNN
 F 3 "~" H 4300 1450 30  0000 C CNN
 	1    4300 1450
@@ -620,4 +618,8 @@ $EndComp
 Text HLabel 5700 1550 2    60   Output ~ 0
 LASER_DETECTOR_OUT
 Connection ~ 5600 1550
+Text Notes 9950 3150 2    60   ~ 0
+Constant current source for laser diode\n
+Text Notes 3650 2550 2    60   ~ 0
+Start of line detector- reverse biased blue LED,\n amplified and fed to schmitt trigger\n
 $EndSCHEMATC

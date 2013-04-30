@@ -1,4 +1,4 @@
-EESchema-LIBRARY Version 2.3  Date: otrdiena, 2013. gada 30. aprīlis, plkst. 20 un 12
+EESchema-LIBRARY Version 2.3  Date: otrdiena, 2013. gada 30. aprīlis, plkst. 23 un 26
 #encoding utf-8
 #
 # +12V
@@ -46,7 +46,7 @@ P 2 0 1 0  -300 50  0 50 N
 P 2 0 1 0  0 150  -300 150 N
 P 3 0 1 0  100 0  -50 0  -50 -100 N
 P 5 0 1 0  100 -100  -150 -100  -200 -50  -250 -100  -350 -100 N
-X ~ 1 300 100 200 L 50 50 1 1 P
+X ~ 1 300 100 200 L 50 50 1 1 w
 X ~ 2 300 -100 200 L 50 50 1 1 P
 X ~ 3 300 0 200 L 50 50 1 1 P
 ENDDRAW

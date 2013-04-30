@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date otrdiena, 2013. gada 30. aprīlis, plkst. 19 un 52
+EESchema Schematic File Version 2  date trešdiena, 2013. gada  1. maijs, plkst. 00 un 21
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -29,16 +29,18 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
+LIBS:l298_breakout
+LIBS:stellaris_launchpad
 LIBS:laser_peripherals-cache
 EELAYER 27 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 2 4
-Title ""
+Title "Lasershow"
 Date "30 apr 2013"
 Rev ""
-Comp ""
+Comp "Hackerspace"
 Comment1 ""
 Comment2 ""
 Comment3 ""
@@ -66,10 +68,10 @@ Wire Wire Line
 Wire Wire Line
 	2600 2650 2600 2750
 $Comp
-L GND #PWR012
+L GND #PWR05
 U 1 1 517FDBED
 P 2600 2750
-F 0 "#PWR012" H 2600 2750 30  0001 C CNN
+F 0 "#PWR05" H 2600 2750 30  0001 C CNN
 F 1 "GND" H 2600 2680 30  0001 C CNN
 F 2 "" H 2600 2750 60  0000 C CNN
 F 3 "" H 2600 2750 60  0000 C CNN
@@ -91,7 +93,6 @@ STEP_B2
 Text HLabel 3750 3150 0    60   Input ~ 0
 STEP_HOME_POS
 NoConn ~ 3750 2350
-NoConn ~ 3750 2450
 NoConn ~ 3750 3350
 NoConn ~ 3750 3550
 NoConn ~ 3750 3650
@@ -119,4 +120,19 @@ NoConn ~ 5550 2650
 NoConn ~ 5550 2550
 NoConn ~ 5550 2450
 NoConn ~ 5550 2350
+$Comp
+L VCC #PWR06
+U 1 1 51802907
+P 3250 2300
+F 0 "#PWR06" H 3250 2400 30  0001 C CNN
+F 1 "VCC" H 3250 2400 30  0000 C CNN
+F 2 "" H 3250 2300 60  0000 C CNN
+F 3 "" H 3250 2300 60  0000 C CNN
+	1    3250 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3250 2300 3250 2450
+Wire Wire Line
+	3250 2450 3750 2450
 $EndSCHEMATC
