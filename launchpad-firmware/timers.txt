@@ -1,0 +1,5 @@
+Timer usage:
+Laser printer motor: TIMER0A
+Laser pulse: TIMER3B
+
+Stepper pulse: TIMER1A

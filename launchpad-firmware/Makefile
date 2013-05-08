@@ -9,7 +9,7 @@ SOURCES	   += motor.c
 SOURCES    += laser.c
 SOURCES    += syscalls.c
 SOURCES    += stellariscommon.c
-
+SOURCES    += stepper.c
 #SOURCES  = $(wildcard src/*.c)
 
 # Includes are located in the Include directory
