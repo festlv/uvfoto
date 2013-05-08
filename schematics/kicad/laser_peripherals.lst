@@ -1,0 +1,78 @@
+eeschema (2013-mar-30)-stable  >> Creation date: trešdiena, 2013. gada  1. maijs, plkst. 00 un 54
+#Cmp ( order = Reference )
+| C1         0.33uF      ; ~           
+| C2         0.1uF       ; ~           
+| C3         C           ; ~           
+| CON1       BARREL_JACK ; ~           
+| D1         LED         ; ~           
+| D2         LED         ; ~           
+| D3         DIODE       ; ~           
+| D4         DIODE       ; ~           
+| D5         DIODE       ; ~           
+| D6         DIODE       ; ~           
+| Q3         BC547       ; TO92        
+| Q4         BC547       ; TO92        
+| Q5         BD237       ; TO126       
+| Q6         MOSFET_N    ; ~           
+| R1         10K         ; ~           
+| R2         5K          ; ~           
+| R3         R           ; ~           
+| R4         10K         ; ~           
+| R11        900R        ; ~           
+| R12        900R        ; ~           
+| R13        900R        ; ~           
+| R14        1K5         ; ~           
+| R15        680R        ; ~           
+| R16        100R        ; ~           
+| R17        680R        ; ~           
+| R18        56R         ; ~           
+| R19        10K         ; ~           
+| R20        2R7         ; ~           
+| RV1        1K          ; ~           
+| SW1        SW_PUSH     ; ~           
+| U1         L298_BREAKOUT; ~           
+| U2         LM358       ;             
+| U3         7805        ; ~           
+| U4         STELLARIS_LAUNCHPAD; ~           
+| U5         LM339       ;             
+#End Cmp
+
+#Cmp ( order = Value )
+| 0.1uF        C2        ; ~           
+| 0.33uF       C1        ; ~           
+| C            C3        ; ~           
+| BARREL_JACK  CON1      ; ~           
+| LED          D1        ; ~           
+| LED          D2        ; ~           
+| DIODE        D3        ; ~           
+| DIODE        D4        ; ~           
+| DIODE        D5        ; ~           
+| DIODE        D6        ; ~           
+| BD237        Q5        ; TO126       
+| BC547        Q3        ; TO92        
+| BC547        Q4        ; TO92        
+| MOSFET_N     Q6        ; ~           
+| 2R7          R20       ; ~           
+| 56R          R18       ; ~           
+| 100R         R16       ; ~           
+| 680R         R15       ; ~           
+| 680R         R17       ; ~           
+| 900R         R11       ; ~           
+| 900R         R12       ; ~           
+| 900R         R13       ; ~           
+| 1K5          R14       ; ~           
+| 5K           R2        ; ~           
+| 10K          R1        ; ~           
+| 10K          R4        ; ~           
+| 10K          R19       ; ~           
+| R            R3        ; ~           
+| 1K           RV1       ; ~           
+| SW_PUSH      SW1       ; ~           
+| 7805         U3        ; ~           
+| LM358        U2        ;             
+| LM339        U5        ;             
+| L298_BREAKOUT U1        ; ~           
+| STELLARIS_LAUNCHPAD U4        ; ~           
+#End Cmp
+
+#End List

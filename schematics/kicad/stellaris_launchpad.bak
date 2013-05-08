@@ -1,4 +1,4 @@
-EESchema-LIBRARY Version 2.3  Date: trešdiena, 2013. gada  1. maijs, plkst. 00 un 22
+EESchema-LIBRARY Version 2.3  Date: trešdiena, 2013. gada  1. maijs, plkst. 00 un 15
 #encoding utf-8
 #
 # STELLARIS_LAUNCHPAD
@@ -11,7 +11,7 @@ F3 "~" 0 0 60 H V C CNN
 DRAW
 S -600 0 600 2200 0 1 0 N
 X +3V3 1 -900 2100 300 R 50 50 1 1 B
-X VBUS 2 -900 2000 300 R 50 50 1 1 W
+X VBUS 2 -900 2000 300 R 50 50 1 1 B
 X PB5 3 -900 1900 300 R 50 50 1 1 B
 X GND 4 -900 1800 300 R 50 50 1 1 w
 X PB0 5 -900 1700 300 R 50 50 1 1 B
