@@ -52,7 +52,7 @@ void gcode_step() {
     char tmp = ReadChar();
     static uint8_t ignore_rest_input = 0;
 
-    if (tmp!=0) {
+    if (tmp!=-1) {
         if (tmp==';') {
             ignore_rest_input = 1;
             command_buffer[buffer_counter]='\0';
