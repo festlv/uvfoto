@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CaR version="11.0">
+<Construction>
+<Window x="-44.10771462768946" y="99.13020399567438" w="2162.8982429463267"/>
+<Objects>
+<Point name="O" n="32" showname="true" x="0" actx="0.0" y="0" acty="0.0" shape="circle" fixed="true">Point at &quot;0&quot;, &quot;0&quot;</Point>
+<Circle name="c2" n="35" type="thin" fixed="1000" midpoint="O" acute="true">Circle around O with radius 1000</Circle>
+<PointOn name="P12" n="38" on="c2" alpha="3.141592653589793" x="-1000.0" y="1.2246467991473532E-13" shape="circle">Point on c2</PointOn>
+<Line name="l3" n="39" type="thin" from="O" to="P12">Line through O and P12</Line>
+<PointOn name="P13" n="42" on="c2" alpha="1.5707963267948966" x="6.123233995736766E-14" y="1000.0" shape="circle">Point on c2</PointOn>
+<Parallel name="pl2" n="43" type="thin" point="P13" line="l3">Parallel line through P13 to l3</Parallel>
+<PointOn name="P14" n="46" on="pl2" alpha="995.3333340907118" x="-995.3333340907117" y="1000.0000000000001" shape="circle">Point on pl2</PointOn>
+<PointOn name="P15" n="50" on="pl2" alpha="-1052.6666659092882" x="1052.6666659092882" y="999.9999999999999" shape="circle">Point on pl2</PointOn>
+<PointOn name="LED" n="52" on="pl2" alpha="1095.3333340907118" x="-1095.3333340907118" y="1000.0000000000001" shape="circle">Point on pl2</PointOn>
+<Segment name="LED_OFFSET" n="55" color="5" showname="true" from="LED" to="P14">Line segment from LED to P14</Segment>
+<Segment name="DRAWING_LINE" n="58" color="2" showname="true" from="P14" to="P15">Line segment from P14 to P15</Segment>
+<Line name="l4" n="61" type="thin" from="LED" to="O">Line through LED and O</Line>
+<PointOn name="P17" n="64" on="l4" alpha="1442.2756915918035" x="-30.19155278371568" y="27.563803496201672" shape="circle">Point on l4</PointOn>
+<Plumb name="p2" n="65" type="thin" point="P17" line="l4" valid="true">Perpendicular line through P17 to l4</Plumb>
+<PointOn name="P18" n="66" on="l4" alpha="1305.9119282502256" x="-130.89819482041855" y="119.50535124459032" shape="circle">Point on l4</PointOn>
+<PointOn name="P19" n="76" on="p2" alpha="-192.4722688810846" x="-159.96355280723878" y="-114.57979396118381" shape="circle">Point on p2</PointOn>
+</Objects>
+</Construction>
+</CaR>

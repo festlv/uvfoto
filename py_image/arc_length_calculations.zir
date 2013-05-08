@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CaR version="11.0">
+<Construction>
+<Window x="0.0" y="0.0" w="2896.309375740099"/>
+<Objects>
+<Point name="O" n="0" showname="true" x="0" actx="0.0" y="0" acty="0.0" shape="circle" fixed="true">Point at &quot;0&quot;, &quot;0&quot;</Point>
+<Circle name="c1" n="3" type="thin" fixed="1000" midpoint="O" acute="true">Circle around O with radius 1000</Circle>
+<Point name="P2" n="6" x="1167.54646" actx="1167.54646" y="0" acty="0.0" shape="circle" fixed="true">Point at &quot;1167.54646&quot;, &quot;0&quot;</Point>
+<Line name="l1" n="7" from="O" to="P2">Line through O and P2</Line>
+<Text name="Text1" n="8" x="-952.396618311531" y="-41.595635438304726">t=0</Text>
+<Text name="Text2" n="9" x="1032.7192246751542" y="-50.20162897726436">t = 1/400 s</Text>
+<Text name="Text3" n="10" x="-1744.148023895816" y="-357.1487318668243">f = 400Hz
+w = Pi * f = 1256.6 rad/s</Text>
+<PointOn name="P5" n="21" on="c1" alpha="1.5603980880571087" x="10.398051356700565" y="999.9459388026852" shape="circle">Point on c1</PointOn>
+<Parallel name="pl1" n="22" type="thin" point="P5" line="l1">Parallel line through P5 to l1</Parallel>
+<PointOn name="P6" n="23" on="pl1" alpha="-1164.2359538950568" x="-1153.8379025383563" y="999.9459388026852" shape="circle">Point on pl1</PointOn>
+<PointOn name="P7" n="28" on="pl1" alpha="-939.6866614848975" x="-929.288610128197" y="999.9459388026852" shape="circle">Point on pl1</PointOn>
+<Segment name="s1" n="29" from="P6" to="P7">Line segment from P6 to P7</Segment>
+<Line name="l2" n="32" from="P6" to="O">Line through P6 and O</Line>
+<Line name="l3" n="35" from="P7" to="O">Line through P7 and O</Line>
+<Intersection name="I2" n="38" first="l2" second="c1" shape="circle" which="second">Intersection between l2 and c1</Intersection>
+<Intersection name="I4" n="41" first="l3" second="c1" shape="circle" which="second">Intersection between l3 and c1</Intersection>
+<Segment name="s2" n="42" from="I2" to="I4">Line segment from I2 to I4</Segment>
+<Intersection name="I6" n="45" first="l1" second="c1" shape="circle" which="second">Intersection between l1 and c1</Intersection>
+<Circle name="c3" n="46" color="2" through="I6" midpoint="O" start="I6" end="I2" acute="true">Circle around O through I6</Circle>
+<Text name="Text5" n="47" x="-1218.944359377822" y="536.1889516702042">l = a1 * R</Text>
+<Angle name="a1" n="50" showname="true" unit="°" first="I2" root="O" second="I6" acute="true">Angle I2 - O - I6</Angle>
+<Segment name="R" n="58" showname="true" from="P5" to="O">Line segment from P5 to O</Segment>
+<Segment name="L" n="61" color="1" showname="true" from="P6" to="P5">Line segment from P6 to P5</Segment>
+<Angle name="a2" n="64" color="2" showname="true" unit="°" first="P6" root="O" second="P5" acute="true">Angle P6 - O - P5</Angle>
+<Text name="Text6" n="65" x="-1586.1106382978728" y="393.6226950354612">a2 = atan(L/R)
+a1 = pi/2 - a2</Text>
+<Text name="Text7" n="66" x="-275.25209670154163" y="1489.2370903628164">All angles in radians</Text>
+<PointOn name="P10" n="70" on="c1" alpha="0.8820569353404815" x="635.5644373908754" y="772.0478261895568" shape="circle">Point on c1</PointOn>
+<Line name="l4" n="73" from="O" to="P10">Line through O and P10</Line>
+<Intersection name="I7" n="74" first="l4" second="pl1" shape="circle">Intersection between l4 and pl1</Intersection>
+<Segment name="s7" n="77" from="P5" to="I7">Line segment from P5 to I7</Segment>
+<Text name="Text8" n="78" x="-242.38617470732743" y="-1345.448681638131">???</Text>
+</Objects>
+</Construction>
+</CaR>
