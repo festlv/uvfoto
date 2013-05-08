@@ -20,4 +20,6 @@ void SetupStdio(void);
 
 void SetupSysTick(void);
 
+char ReadChar();
+
 #endif

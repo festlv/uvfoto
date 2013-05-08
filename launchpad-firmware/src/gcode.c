@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "gcode.h"
 #include "stepper.h"
+#include "stellariscommon.h"
+
 
 static char command_buffer[500];
 
@@ -47,7 +49,7 @@ static void gcode_parse_command() {
 }
 
 void gcode_step() {
-    char tmp = getc((FILE*)NULL);
+    char tmp = ReadChar();
     static uint8_t ignore_rest_input = 0;
 
     if (tmp!=0) {

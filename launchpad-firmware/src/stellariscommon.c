@@ -40,6 +40,9 @@ void SetupClock(int clk)
             break;
     }
 }
+char ReadChar() {
+    return (char)MAP_UARTCharGet(UART0_BASE);
+}
 
 void SetupStdio(void)
 {
