@@ -46,7 +46,8 @@ static volatile float current_speed = 0.0;
 static volatile float target_speed=DEFAULT_SPEED;
 static volatile float current_acceleration = DEFAULT_ACCELERATION;
 
-static const float OVF_S = 80000000 / 1280.0;
+#define TIMER_VALUE 6000
+static const float OVF_S = 80000000 / TIMER_VALUE;
 
 static volatile uint32_t num_ovfs=0;
 static volatile uint32_t next_step_ovf=0;
@@ -68,7 +69,7 @@ void stepper_init() {
 
     //timer 1 - stepper clock
     MAP_TimerConfigure(TIMER1_BASE, TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_PERIODIC);
-    MAP_TimerLoadSet(TIMER1_BASE, TIMER_A, 1280); //should produce 62500 ovf/s
+    MAP_TimerLoadSet(TIMER1_BASE, TIMER_A, TIMER_VALUE); //should produce 62500 ovf/s
     TimerIntRegister(TIMER1_BASE, TIMER_A, timer_isr);
     MAP_TimerIntEnable(TIMER1_BASE, TIMER_TIMA_TIMEOUT);
     MAP_TimerEnable(TIMER1_BASE, TIMER_A);
