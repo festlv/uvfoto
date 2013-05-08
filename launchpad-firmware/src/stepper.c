@@ -99,6 +99,7 @@ void stepper_step_backward() {
 
 
 static void timer_isr() {
+    MAP_TimerIntClear(TIMER1_BASE, TIMER_TIMA_TIMEOUT);
     //this is executed about once every 16 us
     num_ovfs++;
     if ((is_moving) && num_ovfs>=next_step_ovf) {
