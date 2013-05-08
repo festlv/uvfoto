@@ -41,7 +41,7 @@ void SetupClock(int clk)
     }
 }
 char ReadChar() {
-    return (char)MAP_UARTCharGet(UART0_BASE);
+    return (char)MAP_UARTCharGetNonBlocking(UART0_BASE);
 }
 
 void SetupStdio(void)

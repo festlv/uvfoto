@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date trešdiena, 2013. gada  1. maijs, plkst. 01 un 16
+EESchema Schematic File Version 2  date ceturtdiena, 2013. gada  9. maijs, plkst. 01 un 37
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -38,7 +38,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 4
 Title "Lasershow"
-Date "30 apr 2013"
+Date "8 may 2013"
 Rev ""
 Comp "Hackerspace"
 Comment1 ""

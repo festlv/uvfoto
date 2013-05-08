@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date trešdiena, 2013. gada  1. maijs, plkst. 01 un 16
+EESchema Schematic File Version 2  date ceturtdiena, 2013. gada  9. maijs, plkst. 01 un 37
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -38,7 +38,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 2 4
 Title "Lasershow"
-Date "30 apr 2013"
+Date "8 may 2013"
 Rev ""
 Comp "Hackerspace"
 Comment1 ""
@@ -90,7 +90,7 @@ Text HLabel 3750 3250 0    60   Output ~ 0
 STEP_B1
 Text HLabel 3750 3450 0    60   Output ~ 0
 STEP_B2
-Text HLabel 3750 3150 0    60   Input ~ 0
+Text HLabel 5550 3750 2    60   Input ~ 0
 STEP_HOME_POS
 NoConn ~ 3750 2350
 NoConn ~ 3750 3350
@@ -135,4 +135,7 @@ Wire Wire Line
 	3250 2300 3250 2450
 Wire Wire Line
 	3250 2450 3750 2450
+Entry Wire Line
+	5350 2950 5450 3050
+NoConn ~ 6650 2900
 $EndSCHEMATC
