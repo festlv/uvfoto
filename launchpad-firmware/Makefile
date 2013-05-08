@@ -6,6 +6,8 @@ TARGET      = main
 SOURCES    += main.c
 SOURCES    += startup.c
 SOURCES	   += motor.c
+SOURCES    += syscalls.c
+SOURCES    += stellariscommon.c
 
 #SOURCES  = $(wildcard src/*.c)
 
@@ -16,6 +18,7 @@ INCLUDES    = -Isrc/
 
 # Path to the root of your StellarisWare folder
 SW_DIR      = /opt/tivaware/
+TOOL        = /opt/gcc-arm-none-eabi
 
 # Location of a loader script, doesnt matter which one, they're the same
 LD_SCRIPT   = lm4f120h5qr.ld
@@ -38,7 +41,7 @@ CFLAGS     += -mthumb
 CFLAGS     += -mcpu=cortex-m4
 CFLAGS     += -mfloat-abi=$(FPU)
 CFLAGS     += -mfpu=fpv4-sp-d16
-CFLAGS     += -O0
+CFLAGS     += -Os
 CFLAGS     += -ffunction-sections
 CFLAGS     += -fdata-sections
 CFLAGS     += -MD -g
@@ -47,6 +50,8 @@ CFLAGS     += -Wall
 CFLAGS     += -pedantic
 CFLAGS     += -DPART_TM4C1233H6PM
 CFLAGS     += -Dgcc
+CFLAGS     += --specs=nano.specs
+CFLAGS     += -g
 CFLAGS     += -DTARGET_IS_BLIZZARD_RA1
 CFLAGS     += -fsingle-precision-constant
 CFLAGS     += -I$(SW_DIR)/driverlib/ -I$(SW_DIR) $(INCLUDES)
@@ -60,7 +65,7 @@ else
 
 	LIBGCC  = ${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
 	LIBM    = ${shell ${CC} ${CFLAGS} -print-file-name=libm.a}
-	LIBC    = ${shell ${CC} ${CFLAGS} -print-file-name=libc.a}
+	LIBC    = ${shell ${CC} ${CFLAGS} -print-file-name=libc_s.a}
 	
 	DRIVER_LIB	= $(SW_DIR)/driverlib/gcc/libdriver.a
 endif
@@ -72,24 +77,26 @@ LDFLAGS    += --entry ResetISR
 LDFLAGS    += --gc-sections
 LDFLAGS    += -Map .obj/$(TARGET).map
 LDFLAGS    += --cref -g
-#LDFLAGS    += -nostdlib
-###############################################################################
+LDFLAGS    += -nostdlib
+LDFLAGS     += -u _printf_float
+
+###########################################################################
 
 
 # Tool Definitions
 ###############################################################################
-CC          = arm-none-eabi-gcc
-LD          = arm-none-eabi-ld
-AR          = arm-none-eabi-ar
-AS          = arm-none-eabi-as
-NM          = arm-none-eabi-nm
-OBJCOPY     = arm-none-eabi-objcopy
-OBJDUMP     = arm-none-eabi-objdump
-RANLIB      = arm-none-eabi-ranlib
-STRIP       = arm-none-eabi-strip
-SIZE        = arm-none-eabi-size
-READELF     = arm-none-eabi-readelf
-DEBUG       = arm-none-eabi-gdb
+CC          = $(TOOL)/bin/arm-none-eabi-gcc
+LD          = $(TOOL)/bin/arm-none-eabi-ld
+AR          = $(TOOL)/bin/arm-none-eabi-ar
+AS          = $(TOOL)/bin/arm-none-eabi-as
+NM          = $(TOOL)/bin/arm-none-eabi-nm
+OBJCOPY     = $(TOOL)/bin/arm-none-eabi-objcopy
+OBJDUMP     = $(TOOL)/bin/arm-none-eabi-objdump
+RANLIB      = $(TOOL)/bin/arm-none-eabi-ranlib
+STRIP       = $(TOOL)/bin/arm-none-eabi-strip
+SIZE        = $(TOOL)/bin/arm-none-eabi-size
+READELF     = $(TOOL)/bin/arm-none-eabi-readelf
+DEBUG       = $(TOOL)/bin/arm-none-eabi-gdb
 FLASH       = lm4flash
 CP          = cp -p
 RM          = rm -rf
