@@ -5,12 +5,8 @@
 #include "inc/hw_ints.h"
 #include "inc/hw_gpio.h"
 #include "inc/hw_memmap.h"
-#include "inc/hw_ssi.h"
-#include "inc/hw_sysctl.h"
 #include "inc/hw_types.h"
-#include "driverlib/gpio.h"
 #include "driverlib/pin_map.h"
-#include "driverlib/sysctl.h"
 
 
 //1.25mm per revolution, 200 steps/rev motor in half step mode = 400 steps per
@@ -50,4 +46,7 @@ extern void stepper_move_to_origin();
 
 extern void stepper_step_backward();
 extern void stepper_step_forward();
+extern void stepper_move_position_blocking_def(float position);
+extern void stepper_move_position_def(float position);
+
 #endif

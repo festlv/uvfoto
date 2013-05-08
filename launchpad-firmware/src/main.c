@@ -22,7 +22,8 @@
 #define SYSTICK_FREQ 100
 #include "motor.h"
 #include "laser.h"
-
+#include "stepper.h"
+#include "gcode.h"
 
 #define LED_RED GPIO_PIN_1
 #define LED_BLUE GPIO_PIN_2
@@ -55,10 +56,12 @@ int main(void) {
     motor_start();
     laser_init();
     laser_enable();
+    stepper_init();
     //initialize ssi data
     laser_load_calibration_data();
     while(1)
     {
+        gcode_step();
         if (count > SYSTICK_FREQ) {
 
                 if (led_state==0)

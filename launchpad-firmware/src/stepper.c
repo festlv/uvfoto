@@ -127,6 +127,10 @@ void stepper_set_position(float position) {
     current_position_steps = lround(position * STEPS_PER_UNIT);
 }
 
+void stepper_move_position_def(float position) {
+    stepper_move_position(position, DEFAULT_SPEED, DEFAULT_ACCELERATION);
+}
+
 void stepper_move_position(float position, float speed, float acceleration) {
     if (is_moving)
         return;
@@ -140,7 +144,9 @@ void stepper_move_position(float position, float speed, float acceleration) {
     
     is_moving = 1;
 }
-
+void stepper_move_position_blocking_def(float position) {
+    stepper_move_position_blocking(position, DEFAULT_SPEED, DEFAULT_ACCELERATION);
+}
 void stepper_move_position_blocking(float position, float speed,
         float acceleration) {
     stepper_move_position(position, speed, acceleration);
