@@ -4,7 +4,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-
 /*
  * Part of the firmware which renders line by turning laser on at the right
  * time.

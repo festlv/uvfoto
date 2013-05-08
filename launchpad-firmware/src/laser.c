@@ -1,5 +1,5 @@
 #include "laser.h"
-#include "naive_math.h"
+#include <math.h>
 
 #include "inc/hw_ints.h"
 #include "inc/hw_gpio.h"
@@ -17,6 +17,8 @@
 #include "driverlib/ssi.h"
 #include "driverlib/udma.h"
 
+
+const float  PI=3.14159265358979f;
 
 static uint8_t ssi_data[LASER_DATA_LENGTH];
 
@@ -93,7 +95,7 @@ void laser_load_data(uint8_t * data) {
     int image_half = num_source_pixels / 2;
     float tmppos, a, x;
 
-    float angular_offset = PI/2 - naive_atan((image_half + LASER_DETECTOR_OFFSET)/LASER_DISTANCE_TO_TARGET);
+    float angular_offset = PI/2 - atan((image_half + LASER_DETECTOR_OFFSET)/LASER_DISTANCE_TO_TARGET);
     //clean current data array
 
     for (int i = 0; i < LASER_DATA_LENGTH; i++) {
@@ -109,7 +111,7 @@ void laser_load_data(uint8_t * data) {
         else
             tmppos = image_half - current_pixel;
         
-        a = naive_atan(tmppos/LASER_DISTANCE_TO_TARGET);
+        a = atan(tmppos/LASER_DISTANCE_TO_TARGET);
 
         if (current_pixel > image_half)
             x = PI/2 - angular_offset + a;
