@@ -17,7 +17,7 @@
 #define DEFAULT_ACCELERATION 0.1
 #define MAX_ACCELERATION 1.0
 
-#define DEFAULT_SPEED 1.0 
+#define DEFAULT_SPEED 1.0
 #define MAX_SPEED 5.0 
 #define START_SPEED 0.1
 #define HOMING_SPEED 1.0

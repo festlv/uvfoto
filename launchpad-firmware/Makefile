@@ -81,7 +81,7 @@ LDFLAGS    += --gc-sections
 LDFLAGS    += -Map .obj/$(TARGET).map
 LDFLAGS    += --cref -g
 LDFLAGS    += -nostdlib
-LDFLAGS     += -u _printf_float
+LDFLAGS     += -u _scanf_float
 
 ###########################################################################
 

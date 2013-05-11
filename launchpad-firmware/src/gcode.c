@@ -49,10 +49,11 @@ static void gcode_parse_command() {
 }
 
 void gcode_step() {
-    char tmp = ReadChar();
+    char tmp;
     static uint8_t ignore_rest_input = 0;
 
-    if (tmp!=-1) {
+    if (CharsAvail()) {
+        tmp = ReadChar();
         if (tmp==';') {
             ignore_rest_input = 1;
             command_buffer[buffer_counter]='\0';

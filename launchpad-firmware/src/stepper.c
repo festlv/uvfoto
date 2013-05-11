@@ -80,7 +80,7 @@ void stepper_init() {
 
 static inline void stepper_set_outputs() {
     MAP_GPIOPinWrite(STEP_PORT, STEP_GPIOS,
-            (STEP_SEQUENCE[current_phase] << STEP_SHIFT & STEP_MASK));
+            (STEP_SEQUENCE[current_phase] << STEP_SHIFT));
 }
 
 void stepper_step_forward() {

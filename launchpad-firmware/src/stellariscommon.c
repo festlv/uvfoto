@@ -67,3 +67,7 @@ void SetupSysTick(void)
     MAP_SysTickIntEnable();
     MAP_SysTickEnable();
 }
+
+bool CharsAvail() {
+    return MAP_UARTCharsAvail(UART0_BASE);
+}
