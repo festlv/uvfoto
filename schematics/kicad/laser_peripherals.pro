@@ -1,4 +1,4 @@
-update=trešdiena, 2013. gada  1. maijs, plkst. 00 un 51
+update=trešdiena, 2013. gada 15. maijs, plkst. 02 un 15
 last_client=eeschema
 [eeschema]
 version=1
