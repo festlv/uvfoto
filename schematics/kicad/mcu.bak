@@ -137,4 +137,5 @@ Wire Wire Line
 	3250 2450 3750 2450
 Entry Wire Line
 	5350 2950 5450 3050
+NoConn ~ 6650 2900
 $EndSCHEMATC

@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date ceturtdiena, 2013. gada  9. maijs, plkst. 01 un 37
+EESchema Schematic File Version 2  date svētdiena, 2013. gada 19. maijs, plkst. 23 un 38
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -38,7 +38,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 2 4
 Title "Lasershow"
-Date "8 may 2013"
+Date "19 may 2013"
 Rev ""
 Comp "Hackerspace"
 Comment1 ""
@@ -57,7 +57,7 @@ F 3 "~" H 4650 4450 60  0000 C CNN
 	1    4650 4450
 	1    0    0    -1  
 $EndComp
-Text HLabel 3750 2950 0    60   Output ~ 0
+Text HLabel 3750 2750 0    60   Output ~ 0
 MOTOR_EN
 Text HLabel 5550 3650 2    60   Output ~ 0
 MOTOR_CLK
@@ -68,10 +68,10 @@ Wire Wire Line
 Wire Wire Line
 	2600 2650 2600 2750
 $Comp
-L GND #PWR05
+L GND #PWR5
 U 1 1 517FDBED
 P 2600 2750
-F 0 "#PWR05" H 2600 2750 30  0001 C CNN
+F 0 "#PWR5" H 2600 2750 30  0001 C CNN
 F 1 "GND" H 2600 2680 30  0001 C CNN
 F 2 "" H 2600 2750 60  0000 C CNN
 F 3 "" H 2600 2750 60  0000 C CNN
@@ -80,7 +80,7 @@ F 3 "" H 2600 2750 60  0000 C CNN
 $EndComp
 Text HLabel 3750 3750 0    60   Output ~ 0
 LASER_PULSE_OUT
-Text HLabel 3750 2750 0    60   Output ~ 0
+Text HLabel 3750 2950 0    60   Output ~ 0
 LASER_PWM_OUT
 Text HLabel 3750 2850 0    60   Output ~ 0
 STEP_A1
@@ -121,10 +121,10 @@ NoConn ~ 5550 2550
 NoConn ~ 5550 2450
 NoConn ~ 5550 2350
 $Comp
-L VCC #PWR06
+L VCC #PWR6
 U 1 1 51802907
 P 3250 2300
-F 0 "#PWR06" H 3250 2400 30  0001 C CNN
+F 0 "#PWR6" H 3250 2400 30  0001 C CNN
 F 1 "VCC" H 3250 2400 30  0000 C CNN
 F 2 "" H 3250 2300 60  0000 C CNN
 F 3 "" H 3250 2300 60  0000 C CNN

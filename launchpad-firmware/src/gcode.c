@@ -8,7 +8,7 @@ static char command_buffer[500];
 
 static int16_t buffer_counter=0;
 
-static void gcode_execute_command(char cmd, int command_num, char * command) {
+void gcode_execute_command(char cmd, int command_num, char * command) {
     float tmppos;
 
     if (cmd=='G') {
