@@ -41,7 +41,7 @@ void SetupClock(int clk)
     }
 }
 char ReadChar() {
-    return (char)MAP_UARTCharGet(UART0_BASE);
+    return (char)MAP_UARTCharGetNonBlocking(UART0_BASE);
 }
 
 void SetupStdio(void)
@@ -66,4 +66,8 @@ void SetupSysTick(void)
     MAP_SysTickPeriodSet(MAP_SysCtlClockGet());
     MAP_SysTickIntEnable();
     MAP_SysTickEnable();
+}
+
+bool CharsAvail() {
+    return MAP_UARTCharsAvail(UART0_BASE);
 }

@@ -8,7 +8,7 @@ static char command_buffer[500];
 
 static int16_t buffer_counter=0;
 
-static void gcode_execute_command(char cmd, int command_num, char * command) {
+void gcode_execute_command(char cmd, int command_num, char * command) {
     float tmppos;
 
     if (cmd=='G') {
@@ -49,10 +49,11 @@ static void gcode_parse_command() {
 }
 
 void gcode_step() {
-    char tmp = ReadChar();
+    char tmp;
     static uint8_t ignore_rest_input = 0;
 
-    if (tmp!=0) {
+    if (CharsAvail()) {
+        tmp = ReadChar();
         if (tmp==';') {
             ignore_rest_input = 1;
             command_buffer[buffer_counter]='\0';

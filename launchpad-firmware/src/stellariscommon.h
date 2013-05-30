@@ -2,6 +2,8 @@
 #define _STELLARIS_COMMON_H_
 
 #include <stdio.h>
+#include <stdbool.h>
+
 
 #define TRACE    printf("TRACE %s:%d: %s\n",__FILE__,__LINE__,__FUNCTION__)
 #define VAL_I(x) printf(#x ": %d\n", x);
@@ -21,5 +23,6 @@ void SetupStdio(void);
 void SetupSysTick(void);
 
 char ReadChar();
+bool CharsAvail();
 
 #endif
