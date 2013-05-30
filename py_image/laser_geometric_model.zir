@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CaR version="11.0">
+<Construction>
+<Window x="37.70950774474238" y="-47.47223070634473" w="212.81099844354415"/>
+<Objects>
+<Point name="P20" n="136" hidden="true" x="-80" actx="-80.0" y="-86" acty="-86.0" shape="circle" fixed="true">Point at &quot;-80&quot;, &quot;-86&quot;</Point>
+<Point name="P21" n="139" hidden="true" x="80" actx="80.0" y="-86" acty="-86.0" shape="circle" fixed="true">Point at &quot;80&quot;, &quot;-86&quot;</Point>
+<Point name="O" n="242" showname="true" xcoffset="-0.2928253964443144" ycoffset="0.7586839816966346" keepclose="true" x="0" actx="0.0" y="0" acty="0.0" shape="circle" fixed="true">Point at &quot;0&quot;, &quot;0&quot;</Point>
+<Point name="P46" n="313" hidden="true" x="64.31511" actx="64.31511" y="-8" acty="-8.0" shape="circle" fixed="true">Point at &quot;64.31511&quot;, &quot;-8&quot;</Point>
+<Point name="P47" n="316" hidden="true" x="23.319550000000014" actx="23.319550000000014" y="-8" acty="-8.0" shape="circle" fixed="true">Point at &quot;23.319550000000014&quot;, &quot;-8&quot;</Point>
+<Line name="l5" n="140" from="P20" to="P21">Line through P20 and P21</Line>
+<Circle name="c12" n="245" fixed="8" midpoint="O" acute="true">Circle around O with radius 8</Circle>
+<Line name="l10" n="317" color="2" type="thin" from="P46" to="P47">Line through P46 and P47</Line>
+<PointOn name="P43" n="257" color="5" on="c12" alpha="-0.296016827135844" x="7.6520481245292205" y="-2.333700816276337" shape="circle" largepoint="true">Point on c12</PointOn>
+<Segment name="s21" n="260" from="O" to="P43">Line segment from O to P43</Segment>
+<Angle name="a5" n="267" hidden="true" unit="°" first="P43" root="O" fixedangle="true" display="rectangle" fixed="90" acute="true" inverse="true" reduced="true">Angle P43 - O with size 90</Angle>
+<Angle name="a6" n="283" hidden="true" unit="°" first="P43" root="O" fixedangle="true" display="rectangle" fixed="90" acute="true">Angle P43 - O with size 90</Angle>
+<Plumb name="p6" n="263" hidden="true" point="P43" line="s21" valid="true">Perpendicular line through P43 to s21</Plumb>
+<Intersection name="I17" n="268" hidden="true" first="a5" second="c12" shape="circle" which="first">Intersection between a5 and c12</Intersection>
+<Intersection name="I20" n="284" hidden="true" first="a6" second="c12" shape="circle" which="first">Intersection between a6 and c12</Intersection>
+<Plumb name="p9" n="291" hidden="true" point="O" line="a6" valid="true">Perpendicular line through O to a6</Plumb>
+<Plumb name="p7" n="271" hidden="true" point="I17" line="a5" valid="true">Perpendicular line through I17 to a5</Plumb>
+<Segment name="s22" n="275" from="O" to="I17">Line segment from O to I17</Segment>
+<Plumb name="p8" n="287" hidden="true" point="I20" line="a6" valid="true">Perpendicular line through I20 to a6</Plumb>
+<Intersection name="I23" n="292" hidden="true" first="p9" second="c12" shape="circle" which="first">Intersection between p9 and c12</Intersection>
+<Intersection name="I19" n="272" hidden="true" first="p7" second="p6" shape="circle">Intersection between p7 and p6</Intersection>
+<Intersection name="I22" n="288" hidden="true" first="p8" second="p6" shape="circle">Intersection between p8 and p6</Intersection>
+<Plumb name="p10" n="295" hidden="true" point="I23" line="p9" valid="true">Perpendicular line through I23 to p9</Plumb>
+<Segment name="s24" n="281" from="I19" to="I17">Line segment from I19 to I17</Segment>
+<Intersection name="I25" n="296" hidden="true" first="p10" second="p8" shape="circle">Intersection between p10 and p8</Intersection>
+<Intersection name="I26" n="297" hidden="true" first="p10" second="p7" shape="circle">Intersection between p10 and p7</Intersection>
+<Segment name="s30" n="337" from="I19" to="I22">Line segment from I19 to I22</Segment>
+<Segment name="s25" n="300" from="I25" to="I23">Line segment from I25 to I23</Segment>
+<Segment name="s26" n="303" from="I23" to="I26">Line segment from I23 to I26</Segment>
+<Segment name="s27" n="306" from="I25" to="I22">Line segment from I25 to I22</Segment>
+<Segment name="s29" n="312" from="I17" to="I26">Line segment from I17 to I26</Segment>
+<Intersection name="I31" n="338" first="l10" second="s30" shape="circle">Intersection between l10 and s30</Intersection>
+<Plumb name="p13" n="341" type="thin" point="I31" line="s30" valid="true">Perpendicular line through I31 to s30</Plumb>
+<Ray name="r4" n="358" color="2" from="I31" to="P47">Ray from I31 pointing to P47</Ray>
+<Plumb name="p14" n="347" hidden="super" point="P47" line="p13" valid="true">Perpendicular line through P47 to p13</Plumb>
+<PointOn name="P48" n="362" hidden="true" on="p13" alpha="-68.17780550541664" x="71.13643671115173" y="-27.88832504499002" shape="circle">Point on p13</PointOn>
+<Intersection name="I32" n="348" hidden="super" first="p14" second="p13">Intersection between p14 and p13</Intersection>
+<Angle name="a7" n="363" showname="true" unit="°" first="P46" root="I31" second="P48" acute="true">Angle P46 - I31 - P48</Angle>
+<Circle name="c14" n="349" hidden="super" through="P47" midpoint="I32" acute="true">Circle around I32 through P47</Circle>
+<Expression name="E7" n="359" showvalue="true" unit="deg" x="38.68141" y="88.6449" value="a7" prompt="Alpha" fixed="true">Alpha </Expression>
+<Intersection name="I33" n="350" hidden="true" first="p14" second="c14" awayfrom="P47" shape="circle" which="second">Intersection between p14 and c14</Intersection>
+<Ray name="r3" n="353" color="2" from="I31" to="I33">Ray from I31 pointing to I33</Ray>
+<Plumb name="p15" n="367" hidden="super" point="O" line="l5" valid="true">Perpendicular line through O to l5</Plumb>
+<Intersection name="I34" n="368" showname="true" xcoffset="-3.5456150026698197" ycoffset="-10.871267037229018" keepclose="true" first="l5" second="p15" shape="circle">Intersection between l5 and p15</Intersection>
+<Plumb name="p16" n="372" hidden="super" point="I31" line="l5" valid="true">Perpendicular line through I31 to l5</Plumb>
+<Intersection name="I35" n="373" showname="true" first="l5" second="p16" shape="circle">Intersection between l5 and p16</Intersection>
+<Intersection name="I36" n="374" showname="true" xcoffset="5.83287432673427" ycoffset="7.8698408340257515" keepclose="true" first="r3" second="l5" shape="circle">Intersection between r3 and l5</Intersection>
+<Circle name="c15" n="379" type="thin" through="I34" midpoint="O" acute="true">Circle around O through I34</Circle>
+<Intersection name="I37" n="380" first="r3" second="c15" shape="circle" which="first">Intersection between r3 and c15</Intersection>
+<PointOn name="P49" n="381" showname="true" on="l5" alpha="-20.0" x="-100.0" y="-86.0" shape="circle">Point on l5</PointOn>
+<PointOn name="P50" n="382" showname="true" on="l5" alpha="180.0" x="100.0" y="-86.0" shape="circle">Point on l5</PointOn>
+<PointOn name="P51" n="383" showname="true" on="l5" alpha="200.0" x="120.0" y="-86.0" shape="circle">Point on l5</PointOn>
+</Objects>
+</Construction>
+</CaR>
