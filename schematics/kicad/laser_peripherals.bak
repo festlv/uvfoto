@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date ceturtdiena, 2013. gada  9. maijs, plkst. 01 un 37
+EESchema Schematic File Version 2  date svētdiena, 2013. gada 19. maijs, plkst. 23 un 38
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -38,7 +38,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 4
 Title "Lasershow"
-Date "8 may 2013"
+Date "19 may 2013"
 Rev ""
 Comp "Hackerspace"
 Comment1 ""
@@ -78,10 +78,10 @@ F 3 "~" H 8400 3700 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR01
+L GND #PWR4
 U 1 1 517FEEDB
 P 7950 3850
-F 0 "#PWR01" H 7950 3850 30  0001 C CNN
+F 0 "#PWR4" H 7950 3850 30  0001 C CNN
 F 1 "GND" H 7950 3780 30  0001 C CNN
 F 2 "" H 7950 3850 60  0000 C CNN
 F 3 "" H 7950 3850 60  0000 C CNN
@@ -129,10 +129,10 @@ F 3 "~" H 5400 2550 60  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L GND #PWR02
+L GND #PWR1
 U 1 1 518056EF
 P 4100 2750
-F 0 "#PWR02" H 4100 2750 30  0001 C CNN
+F 0 "#PWR1" H 4100 2750 30  0001 C CNN
 F 1 "GND" H 4100 2680 30  0001 C CNN
 F 2 "" H 4100 2750 60  0000 C CNN
 F 3 "" H 4100 2750 60  0000 C CNN
@@ -140,10 +140,10 @@ F 3 "" H 4100 2750 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +12V #PWR03
+L +12V #PWR2
 U 1 1 518056FE
 P 4350 2950
-F 0 "#PWR03" H 4350 2900 20  0001 C CNN
+F 0 "#PWR2" H 4350 2900 20  0001 C CNN
 F 1 "+12V" H 4350 3050 30  0000 C CNN
 F 2 "" H 4350 2950 60  0000 C CNN
 F 3 "" H 4350 2950 60  0000 C CNN
@@ -181,10 +181,10 @@ Wire Wire Line
 Wire Wire Line
 	6150 3100 6050 3100
 $Comp
-L VCC #PWR04
+L VCC #PWR3
 U 1 1 51805A56
 P 6300 2800
-F 0 "#PWR04" H 6300 2900 30  0001 C CNN
+F 0 "#PWR3" H 6300 2900 30  0001 C CNN
 F 1 "VCC" H 6300 2900 30  0000 C CNN
 F 2 "" H 6300 2800 60  0000 C CNN
 F 3 "" H 6300 2800 60  0000 C CNN

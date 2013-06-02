@@ -10,6 +10,7 @@ SOURCES    += laser.c
 SOURCES    += syscalls.c
 SOURCES    += stellariscommon.c
 SOURCES    += stepper.c
+SOURCES    += systick.c
 SOURCES    += gcode.c
 
 #SOURCES  = $(wildcard src/*.c)
@@ -47,7 +48,7 @@ CFLAGS     += -mfpu=fpv4-sp-d16
 CFLAGS     += -Os
 CFLAGS     += -ffunction-sections
 CFLAGS     += -fdata-sections
-CFLAGS     += -MD -g
+CFLAGS     += -MD 
 CFLAGS     += -std=c99
 CFLAGS     += -Wall
 CFLAGS     += -pedantic

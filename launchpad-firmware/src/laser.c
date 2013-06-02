@@ -1,5 +1,6 @@
 #include "laser.h"
 #include <math.h>
+#include <stdio.h>
 
 #include "inc/hw_ints.h"
 #include "inc/hw_gpio.h"
@@ -16,10 +17,17 @@
 #include "driverlib/ssi.h"
 #include "driverlib/udma.h"
 
+#include "systick.h"
 
 const float  PI=3.14159265358979f;
+const float ANGLE_DIFF = USEFUL_ANGLE / ANGULAR_RESOLUTION;
 
-static uint8_t ssi_data[LASER_DATA_LENGTH];
+uint8_t ssi_data[ANGULAR_DATA_SIZE];
+
+float radians(float a) {
+    return a * PI/180;
+}
+
 
 static uint8_t udma_control_table[1024] __attribute__((aligned(1024)));
 
@@ -35,6 +43,14 @@ volatile unsigned int edge_count=0;
 
 static void start_of_line_handler();
 
+static void laser_launch_dma() {
+    uDMAChannelDisable(UDMA_CHANNEL_SSI0TX);
+    uDMAChannelTransferSet(UDMA_CHANNEL_SSI0TX, UDMA_MODE_BASIC, ssi_data,
+            (void *)(SSI0_BASE + SSI_O_DR), ANGULAR_DATA_SIZE); 
+
+    uDMAChannelEnable(UDMA_CHANNEL_SSI0TX);
+}
+
 static void init_start_of_line_interrupt() {
     //start of line interrupt on PB5
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
@@ -44,11 +60,18 @@ static void init_start_of_line_interrupt() {
     GPIOIntEnable(GPIO_PORTB_BASE, GPIO_INT_PIN_5);
 }
 
+static void laser_init_pwm() {
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+    GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, GPIO_PIN_1);
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_1, 0xff);
+}
+
+
 static void laser_init_ssi() {
     //sets up SSI to transfer data bit-by-bit (to pulse laser)
     SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
     SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_TI,
-            SSI_MODE_MASTER, 667720, 8);
+            SSI_MODE_MASTER, 1331200, 8);
     SSIEnable(SSI0_BASE);
     //set PA5 as TX for SSI
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
@@ -57,6 +80,12 @@ static void laser_init_ssi() {
     GPIOPinConfigure(GPIO_PA5_SSI0TX);
     SSIDMAEnable(SSI0_BASE, SSI_DMA_TX);
 
+}
+
+void laser_step() {
+    if (systick_get_count() % SYSTICK_FREQ ==0) {
+        edge_count=0;
+    }
 }
 static void laser_init_dma() {
     SysCtlPeripheralEnable(SYSCTL_PERIPH_UDMA);
@@ -67,14 +96,25 @@ static void laser_init_dma() {
     uDMAChannelControlSet(UDMA_CHANNEL_SSI0TX | UDMA_PRI_SELECT, UDMA_SIZE_8 | UDMA_ARB_4 | UDMA_SRC_INC_8 | UDMA_DST_INC_NONE);
 }
 
-static void laser_init_timer() {
+static void laser_start_timer_interrupt() {
+    TimerIntClear(TIMER3_BASE, TIMER_TIMA_TIMEOUT);
+
+    //laser_launch_dma();
+}
+
+
+static void laser_init_timers() {
     //timer is used to filter out false rising edges in interrupt handler
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER3);
-	TimerConfigure(TIMER3_BASE, TIMER_CFG_SPLIT_PAIR | TIMER_CFG_B_PERIODIC);
+	TimerConfigure(TIMER3_BASE, TIMER_CFG_SPLIT_PAIR | TIMER_CFG_B_PERIODIC | TIMER_CFG_A_ONE_SHOT);
 
     //prescaler 80, yields 1mhz timer clock
     TimerPrescaleSet(TIMER3_BASE, TIMER_B, 80);
-    
+    TimerPrescaleSet(TIMER3_BASE, TIMER_A, 80);
+
+    TimerLoadSet(TIMER3_BASE, TIMER_A, 10);
+    TimerIntRegister(TIMER3_BASE, TIMER_A, laser_start_timer_interrupt);
+    TimerIntEnable(TIMER3_BASE, TIMER_TIMA_TIMEOUT);
 	TimerLoadSet(TIMER3_BASE, TIMER_B, 60000);
 
 	TimerEnable(TIMER3_BASE, TIMER_B);
@@ -82,56 +122,42 @@ static void laser_init_timer() {
 
 
 void laser_init() {
-    laser_init_timer();
+    laser_init_timers();
     init_start_of_line_interrupt();
     laser_init_ssi();
     laser_init_dma();
+    laser_init_pwm();
 }
 
-
 void laser_load_data(uint8_t * data) {
-    int num_source_pixels = LASER_DATA_LENGTH*8;
-    int image_half = num_source_pixels / 2;
-    float tmppos, a, x;
-
-    float angular_offset = PI/2 - atan((image_half + LASER_DETECTOR_OFFSET)/LASER_DISTANCE_TO_TARGET);
+    float tmppos, angle, offset;
+        
     //clean current data array
-
-    for (int i = 0; i < LASER_DATA_LENGTH; i++) {
+    
+    for (int i = 0; i < ANGULAR_DATA_SIZE; i++) {
         ssi_data[i] = 0xff;
     }
 
-    for (int current_pixel = 0; 
-            current_pixel < num_source_pixels; 
-            current_pixel++) {
+    for (int i = 0; i < (int)ANGULAR_RESOLUTION; i++) {
+        angle = START_ANGLE + i*ANGLE_DIFF;
+        tmppos = A / cos(radians(angle)) - 
+                 tan(radians(angle)) * B +
+                 tan(radians(90 - 2 * angle)) * C;
 
-        if (current_pixel > image_half)
-            tmppos = current_pixel - image_half;
-        else
-            tmppos = image_half - current_pixel;
-        
-        a = atan(tmppos/LASER_DISTANCE_TO_TARGET);
+        offset = (IMAGE_HALF - tmppos);
+        if (offset > 0 )  {
+            int target_byte_num = (int)offset / 8;
+            int target_bit_mask = (1 << ((int)offset % 8));
 
-        if (current_pixel > image_half)
-            x = PI/2 - angular_offset + a;
-        else
-            x = PI/2 - a - angular_offset;
-        x = x * LASER_DISTANCE_TO_TARGET;
-        //get bit value of current pixel, from data array
-        int source_byte_num = current_pixel / 8;
-        uint8_t source_mask = (1 << (current_pixel % 8));
-        
-        int target_byte_num = (int)x / 8;
-        int target_bit_mask = (1 << ((int)x % 8));
 
-        if (data[source_byte_num] & source_mask) {
-            //bit is set in source, clear it in ssi_data
-            ssi_data[target_byte_num] &= ~(target_bit_mask);
+            if (data[target_byte_num] & target_bit_mask) {
+                int source_byte_num = i / 8;
+                uint8_t source_mask = (1 << (i % 8));
+                ssi_data[source_byte_num] &= ~(source_mask);
+            }
         } 
     }
-
 }
-
 
 void laser_set_intensity(uint8_t intensity) {
     laser_intensity = intensity;
@@ -145,14 +171,6 @@ void laser_disable() {
     laser_enabled = 0;
 }
 
-
-static void laser_launch_dma() {
-    uDMAChannelDisable(UDMA_CHANNEL_SSI0TX);
-    uDMAChannelTransferSet(UDMA_CHANNEL_SSI0TX, UDMA_MODE_BASIC, ssi_data,
-            (void *)(SSI0_BASE + SSI_O_DR), LASER_DATA_LENGTH); 
-
-    uDMAChannelEnable(UDMA_CHANNEL_SSI0TX);
-}
 
 static void start_of_line_handler() {
     GPIOIntClear(GPIO_PORTB_BASE, GPIO_INT_PIN_5);

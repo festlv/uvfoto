@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CaR version="11.0">
 <Construction>
-<Window x="5.894218069684828" y="-8.532375352229108" w="15.81727209374393"/>
+<Window x="27.71541133614439" y="-40.992161025952264" w="300.96020022103323"/>
 <Objects>
 <Point name="P20" n="136" hidden="true" x="-80" actx="-80.0" y="-86" acty="-86.0" shape="circle" fixed="true">Point at &quot;-80&quot;, &quot;-86&quot;</Point>
 <Point name="P21" n="139" hidden="true" x="80" actx="80.0" y="-86" acty="-86.0" shape="circle" fixed="true">Point at &quot;80&quot;, &quot;-86&quot;</Point>
@@ -11,7 +11,7 @@
 <Line name="l5" n="140" from="P20" to="P21">Line through P20 and P21</Line>
 <Circle name="c12" n="245" fixed="8" midpoint="O" acute="true">Circle around O with radius 8</Circle>
 <Line name="l10" n="317" color="2" type="thin" showname="true" from="P46" to="P47">Line through P46 and P47</Line>
-<PointOn name="P43" n="257" color="5" on="c12" alpha="-0.2074354217135103" x="7.828498476702025" y="-1.647607841773663" shape="circle">Point on c12</PointOn>
+<PointOn name="P43" n="257" color="5" on="c12" alpha="-0.30499523534653616" x="7.630787066798539" y="-2.402309043645331" shape="circle">Point on c12</PointOn>
 <Segment name="s21" n="260" from="O" to="P43">Line segment from O to P43</Segment>
 <Angle name="a5" n="267" hidden="true" unit="°" first="P43" root="O" fixedangle="true" display="rectangle" fixed="90" acute="true" inverse="true" reduced="true">Angle P43 - O with size 90</Angle>
 <Angle name="a6" n="283" hidden="true" unit="°" first="P43" root="O" fixedangle="true" display="rectangle" fixed="90" acute="true">Angle P43 - O with size 90</Angle>
@@ -34,13 +34,13 @@
 <Segment name="s26" n="303" from="I23" to="I26">Line segment from I23 to I26</Segment>
 <Segment name="s27" n="306" from="I25" to="I22">Line segment from I25 to I22</Segment>
 <Segment name="s29" n="312" from="I17" to="I26">Line segment from I17 to I26</Segment>
-<Intersection name="I31" n="338" showname="true" xcoffset="-0.17600414155291144" ycoffset="-0.1121054091966851" keepclose="true" first="l10" second="s30" shape="circle">Intersection between l10 and s30</Intersection>
+<Intersection name="I31" n="338" hidden="true" showname="true" xcoffset="-0.17600414155291144" ycoffset="-0.1121054091966851" keepclose="true" first="l10" second="s30" shape="circle">Intersection between l10 and s30</Intersection>
 <Plumb name="p13" n="341" type="thin" point="I31" line="s30" valid="true">Perpendicular line through I31 to s30</Plumb>
 <Ray name="r4" n="358" color="2" from="I31" to="P47">Ray from I31 pointing to P47</Ray>
 <Plumb name="p14" n="347" hidden="super" point="P47" line="p13" valid="true">Perpendicular line through P47 to p13</Plumb>
-<PointOn name="P48" n="362" hidden="true" on="p13" alpha="-68.17780550541664" x="73.20778694681462" y="-22.04128587320551" shape="circle">Point on p13</PointOn>
+<PointOn name="P48" n="362" hidden="true" on="p13" alpha="-68.17780550541664" x="70.89982281504265" y="-28.473019842694363" shape="circle">Point on p13</PointOn>
 <Intersection name="I32" n="348" hidden="super" first="p14" second="p13">Intersection between p14 and p13</Intersection>
-<Angle name="a7" n="363" showname="true" showvalue="true" unit="°" first="P46" root="I31" second="P48" acute="true">Angle P46 - I31 - P48</Angle>
+<Angle name="a7" n="363" hidden="true" showname="true" showvalue="true" unit="°" first="P46" root="I31" second="P48" acute="true">Angle P46 - I31 - P48</Angle>
 <Circle name="c14" n="349" hidden="super" through="P47" midpoint="I32" acute="true">Circle around I32 through P47</Circle>
 <Expression name="E7" n="359" showname="true" showvalue="true" unit="deg" x="38.68141" y="88.6449" value="a7" prompt="Alpha" fixed="true">Alpha </Expression>
 <Intersection name="I33" n="350" hidden="true" first="p14" second="c14" awayfrom="P47" shape="circle" which="second">Intersection between p14 and c14</Intersection>
@@ -57,40 +57,30 @@
 <PointOn name="P51" n="383" showname="true" on="l5" alpha="200.0" x="120.0" y="-86.0" shape="circle">Point on l5</PointOn>
 <Ray name="r6" n="400" from="I34" to="O">Ray from I34 pointing to O</Ray>
 <Plumb name="p11" n="406" point="O" line="r6" valid="true">Perpendicular line through O to r6</Plumb>
-<Segment name="s10" n="409" from="O" to="I31">Line segment from O to I31</Segment>
-<Text name="Text1" n="414" x="129.9838343131053" y="69.01594550475407">a4 = 90 - 2alpha
-tan(a4) = x1/d1
-x1 = tan(90- 2alpha) * d1
-d(I34-I35) = x1
-d(l10, O) = d1 &lt;- const </Text>
-<Text name="Text2" n="415" x="226.44922974438487" y="75.60173317794855">d(I35, I36) = x2
+<Segment name="s10" n="409" hidden="true" from="O" to="I31">Line segment from O to I31</Segment>
+<Text name="Text2" n="415" x="226.44922974438492" y="75.60173317794856">d(I35, I36) = x2
 d(I35, O) - d1 = d2
 tan(90-2alpha) = x2/d2
 x2 = tan(90-2alpha)/d2</Text>
-<Text name="Text3" n="416" x="115.2709910745009" y="146.061827112047">x1 + x2 = tan(90 - 2alpha)*d1 + tan(90-2alpha)*d2
-
-x1 + x2 = x3
-
-x3 = tan(90-2alpha)(d1 + d2)
-x3 = cot(2alpha)(d1+d2)
-cot(2alpha) = x3/(d1+d2)
-2alpha = arccot(x3/(d1+d2))
-alpha = arccot(x3/(d1+d2)) / 2</Text>
-<Expression name="E2" n="417" showname="true" showvalue="true" x="-98.72575" y="-139.7927" value="d(I34,I36)" prompt="x3">Expression &quot;d(I34,I36)&quot; at -98.72575, -139.7927</Expression>
+<Expression name="E2" n="417" showname="true" showvalue="true" x="-100.93409514397824" y="-113.7342273010569" value="d(I34,I36)" prompt="x3">Expression &quot;d(I34,I36)&quot; at -100.9341, -113.73423</Expression>
 <Expression name="E4" n="419" showvalue="true" unit="Alpha" x="14.238290000000001" y="6.06409" value="a7" prompt="Value" fixed="true">Expression &quot;a7&quot; at 14.23829, 6.06409</Expression>
 <Expression name="E6" n="421" showname="true" showvalue="true" x="0.23436" y="-150.85969" value="d(I35,I31)" prompt="d2">Expression &quot;d(I35,I31)&quot; at 0.23436, -150.85969</Expression>
-<Expression name="E8" n="422" showvalue="true" x="9.093957810283428" y="-117.73249316150583" value="" prompt="Value">Expression &quot;&quot; at 9.09396, -117.73249</Expression>
-<Expression name="E9" n="423" showvalue="true" x="71.4963463445055" y="-126.59209153364847" value="" prompt="Value">Expression &quot;&quot; at 71.49635, -126.59209</Expression>
-<Expression name="E10" n="424" showname="true" showvalue="true" x="-9.32301" y="-175.96799000000001" value="tan(90-3*a7)*8" prompt="x1">Expression &quot;tan(90-3*a7)*8&quot; at -9.32301, -175.96799</Expression>
-<Expression name="E11" n="425" showname="true" showvalue="true" x="-6.574520000000001" y="-190.62663" value="tan(90-2*a7)*78" prompt="x2">Expression &quot;tan(90-2*a7)*78&quot; at -6.57452, -190.62663</Expression>
-<Expression name="E12" n="426" showname="true" showvalue="true" x="-95.44252" y="-167.7225" value="d(I34,I35)" prompt="x1_measured">Expression &quot;d(I34,I35)&quot; at -95.44252, -167.7225</Expression>
-<Expression name="E13" n="427" showname="true" showvalue="true" x="-96.81677" y="-187.42005" value="d(I35,I36)" prompt="x2_measured">Expression &quot;d(I35,I36)&quot; at -96.81677, -187.42005</Expression>
+<Expression name="E10" n="424" showname="true" showvalue="true" x="-9.32301" y="-175.96799000000001" value="8/cos(a7)-tan(a7)*8" prompt="x1">Expression &quot;8/cos(a7)-tan(a7)*8&quot; at -9.32301, -175.96799</Expression>
+<Expression name="E11" n="425" showname="true" showvalue="true" x="-6.5745200000000015" y="-190.62663" value="tan(90-2*a7)*78" prompt="x2">Expression &quot;tan(90-2*a7)*78&quot; at -6.57452, -190.62663</Expression>
+<Expression name="E12" n="426" showname="true" showvalue="true" x="-131.21771133244727" y="-122.23059003404853" value="d(I34,I35)" prompt="x1_measured">Expression &quot;d(I34,I35)&quot; at -131.21771, -122.23059</Expression>
+<Expression name="E13" n="427" showname="true" showvalue="true" x="-130.8252852172647" y="-130.88641431415738" value="d(I35,I36)" prompt="x2_measured">Expression &quot;d(I35,I36)&quot; at -130.82529, -130.88641</Expression>
 <Ray name="r7" n="403" from="I35" to="I31">Ray from I35 pointing to I31</Ray>
-<Intersection name="I27" n="410" showname="true" first="p11" second="r7" shape="circle">Intersection between p11 and r7</Intersection>
+<Intersection name="I27" n="410" showname="true" xcoffset="-3.012919610042914" ycoffset="-5.802209712642124" keepclose="true" first="p11" second="r7" shape="circle">Intersection between p11 and r7</Intersection>
 <Expression name="E5" n="420" showname="true" showvalue="true" x="-0.16136" y="-140.69563000000005" value="d(I27,I31)" prompt="d1" fixed="true">Expression &quot;d(I27,I31)&quot; at -0.16136, -140.69563</Expression>
-<Angle name="a8" n="430" showname="true" showvalue="true" unit="°" first="I27" root="I31" second="P43" acute="true">Angle I27 - I31 - P43</Angle>
-<Ray name="r8" n="433" from="I37" to="I31">Ray from I37 pointing to I31</Ray>
-<Ray name="r10" n="442" from="O" to="I31">Ray from O pointing to I31</Ray>
+<Angle name="a8" n="430" hidden="true" showname="true" showvalue="true" unit="°" first="I27" root="I31" second="P43" acute="true">Angle I27 - I31 - P43</Angle>
+<Ray name="r8" n="433" hidden="true" from="I37" to="I31">Ray from I37 pointing to I31</Ray>
+<Ray name="r10" n="442" hidden="true" from="O" to="I31">Ray from O pointing to I31</Ray>
+<Angle name="a3" n="451" hidden="true" showname="true" showvalue="true" unit="°" first="I27" root="O" second="P43" acute="true">Angle I27 - O - P43</Angle>
+<Intersection name="I24" n="452" showname="true" first="s30" second="p11" shape="circle">Intersection between s30 and p11</Intersection>
+<Point name="P11" n="453" x="-24.40153406174221" y="-32.821283993232754" shape="circle">Point at -24.40153, -32.82128</Point>
+<Point name="P12" n="454" x="-34.2624309432307" y="-31.275295922829912" shape="circle">Point at -34.26243, -31.2753</Point>
+<Point name="P13" n="455" x="-45.98907967500497" y="-29.436795909797496" shape="circle">Point at -45.98908, -29.4368</Point>
+<Text name="Text4" n="457" x="183.71048893762236" y="65.36811915687363">			</Text>
 </Objects>
 </Construction>
 </CaR>
