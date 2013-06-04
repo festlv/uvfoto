@@ -7,13 +7,15 @@ SOURCES    += main.c
 SOURCES    += startup.c
 SOURCES	   += motor.c
 SOURCES    += laser.c
+SOURCES	   += laser_data.c
 SOURCES    += syscalls.c
 SOURCES    += stellariscommon.c
 SOURCES    += stepper.c
 SOURCES    += systick.c
 SOURCES    += gcode.c
 
-#SOURCES  = $(wildcard src/*.c)
+#no idea why following does not work
+#SOURCES  = $(wildcard *.c)
 
 # Includes are located in the Include directory
 INCLUDES    = -Isrc/
@@ -82,7 +84,7 @@ LDFLAGS    += --gc-sections
 LDFLAGS    += -Map .obj/$(TARGET).map
 LDFLAGS    += --cref -g
 LDFLAGS    += -nostdlib
-LDFLAGS     += -u _scanf_float
+LDFLAGS     += -u _scanf_float -u _printf_float
 
 ###########################################################################
 

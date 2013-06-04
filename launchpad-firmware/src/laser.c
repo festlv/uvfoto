@@ -1,4 +1,6 @@
 #include "laser.h"
+#include "laser_data.h"
+
 #include <math.h>
 #include <stdio.h>
 
@@ -17,17 +19,10 @@
 #include "driverlib/ssi.h"
 #include "driverlib/udma.h"
 
+
 #include "systick.h"
 
-const float  PI=3.14159265358979f;
-const float ANGLE_DIFF = USEFUL_ANGLE / ANGULAR_RESOLUTION;
-
 uint8_t ssi_data[ANGULAR_DATA_SIZE];
-
-float radians(float a) {
-    return a * PI/180;
-}
-
 
 static uint8_t udma_control_table[1024] __attribute__((aligned(1024)));
 
@@ -71,7 +66,7 @@ static void laser_init_ssi() {
     //sets up SSI to transfer data bit-by-bit (to pulse laser)
     SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
     SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_TI,
-            SSI_MODE_MASTER, 1331200, 8);
+            SSI_MODE_MASTER, LASER_SPI_FREQ, 8);
     SSIEnable(SSI0_BASE);
     //set PA5 as TX for SSI
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
@@ -129,35 +124,7 @@ void laser_init() {
     laser_init_pwm();
 }
 
-void laser_load_data(uint8_t * data) {
-    float tmppos, angle, offset;
-        
-    //clean current data array
-    
-    for (int i = 0; i < ANGULAR_DATA_SIZE; i++) {
-        ssi_data[i] = 0xff;
-    }
 
-    for (int i = 0; i < (int)ANGULAR_RESOLUTION; i++) {
-        angle = START_ANGLE + i*ANGLE_DIFF;
-        tmppos = A / cos(radians(angle)) - 
-                 tan(radians(angle)) * B +
-                 tan(radians(90 - 2 * angle)) * C;
-
-        offset = (IMAGE_HALF - tmppos);
-        if (offset > 0 )  {
-            int target_byte_num = (int)offset / 8;
-            int target_bit_mask = (1 << ((int)offset % 8));
-
-
-            if (data[target_byte_num] & target_bit_mask) {
-                int source_byte_num = i / 8;
-                uint8_t source_mask = (1 << (i % 8));
-                ssi_data[source_byte_num] &= ~(source_mask);
-            }
-        } 
-    }
-}
 
 void laser_set_intensity(uint8_t intensity) {
     laser_intensity = intensity;
@@ -201,5 +168,21 @@ void laser_load_calibration_data() {
         }
         i+= 40;
     }
-    laser_load_data(data);
+    laser_load_data(data, ssi_data);
+}
+
+
+void laser_calibration_point_set_position(float position) {
+    uint8_t data[LASER_DATA_LENGTH];
+    for (int i=0;i<LASER_DATA_LENGTH;i++)
+        data[i] = 0x00;
+    int start_pixel = (int)((position) * 10);
+    for (int i = start_pixel; i < (start_pixel+ 10); i++) {
+        int byte_num = i/8;
+        uint8_t mask = (1 << (i % 8));
+        data[byte_num] |= mask;
+    }
+
+    printf("#Calibration point start pixel: %d, freq: %lu\n", start_pixel, LASER_SPI_FREQ);
+    laser_load_data(data, ssi_data);
 }

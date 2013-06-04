@@ -7,6 +7,9 @@
 //variable)
 //G92 - alias of G92 X0
 //
+//
+//M1 Y%f - "draw" a calibration point at specified point
+//M2 A%f - set start angle (for calibration)
 extern void gcode_step();
 
 #endif

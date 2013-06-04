@@ -2,7 +2,8 @@
 #include "gcode.h"
 #include "stepper.h"
 #include "stellariscommon.h"
-
+#include "laser.h"
+#include "laser_data.h"
 
 static char command_buffer[500];
 
@@ -32,6 +33,17 @@ void gcode_execute_command(char cmd, int command_num, char * command) {
                 return;
 
     }
+    } else if (cmd=='M') {
+        switch(command_num) {
+            case 1:
+                if (sscanf(command, "M1 Y%f", &tmppos)==1)
+                    laser_calibration_point_set_position(tmppos);
+                break;
+            case 2:
+                if (sscanf(command, "M2 A%f", &tmppos)==1)
+                    laser_set_start_angle(tmppos);
+                break;
+        }
     }
 
     printf("OK\n");
@@ -41,6 +53,7 @@ void gcode_execute_command(char cmd, int command_num, char * command) {
 static void gcode_parse_command() {
     int command_num;
     char command;
+    printf("Parsing command: %s", command_buffer);
     int res = sscanf(command_buffer, "%c%d", &command, &command_num);
     if (res==2) {
         gcode_execute_command(command, command_num, command_buffer);
