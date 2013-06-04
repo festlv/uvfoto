@@ -4,5 +4,6 @@ avr-firmware/build/*
 avr-firmware/.sconsign.dblite
 launchpad-firmware/.obj/
 launchpad-firmware/bin/
+linux-software/.env
 .env
 *.bak
