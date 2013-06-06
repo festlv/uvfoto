@@ -18,7 +18,7 @@ class CalibrationInterface():
         self.thread = threading.Thread(
             target=serial_worker,
             args=(port, self.queue))
-
+        self.thread.setDaemon(True)
         self.thread.start()
         self.phone = SkypePhoneDriver()
         self.phone.map_action(PhoneKeys.KEY_1, self._increase_angle)
@@ -55,10 +55,12 @@ def serial_worker(port, queue):
     queue = queue
     try:
         while True:
-            msg = queue.get(False)
-            if msg:
+            try:
+                msg = queue.get(False)
                 print("$ %s\n" % msg)
                 ser.write("%s\n" % (msg.strip()))
+            except Queue.Empty:
+                pass
 
             numchars = ser.inWaiting()
             if numchars > 0:
