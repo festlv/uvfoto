@@ -37,11 +37,12 @@ void gcode_execute_command(char cmd, int command_num, char * command) {
         switch(command_num) {
             case 1:
                 if (sscanf(command, "M1 Y%f", &tmppos)==1)
-                    laser_calibration_point_set_position(tmppos);
+                    laser_calibration_set_point(tmppos);
                 break;
             case 2:
                 if (sscanf(command, "M2 A%f", &tmppos)==1)
                     laser_set_start_angle(tmppos);
+                    laser_calibration_set_point(150.0);
                 break;
         }
     }

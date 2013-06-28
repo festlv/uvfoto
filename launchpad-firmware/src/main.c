@@ -31,11 +31,12 @@ int main(void) {
     systick_init();
     motor_init();    
     motor_start();
+    SysCtlDelay(SysCtlClockGet()/3);//delay for 1 second
     laser_init();
-    laser_enable();
     stepper_init();
     //initialize ssi data
-    laser_load_calibration_data();
+    laser_calibration_set_point(150.0);
+    laser_enable();
     while(1)
     {
         gcode_step();

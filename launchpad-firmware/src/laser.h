@@ -45,6 +45,6 @@ void laser_step();
 
 //enables drawing a calibration point- 0.8mm long strip at certain position
 //useful for debugging
-void laser_calibration_point_set_position(float position);
+void laser_calibration_set_point(float position);
 
 #endif
