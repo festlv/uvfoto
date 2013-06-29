@@ -30,21 +30,6 @@ class CalibrationInterface():
         self.phone.map_action(PhoneKeys.KEY_2, self._increase_position)
         self.phone.map_action(PhoneKeys.KEY_5, self._decrease_position)
         self.phone.listen()
-        #fd = sys.stdin.fileno()
-        #old_settings = termios.tcgetattr(fd)
-        #tty.setraw(sys.stdin.fileno())
-        #try:
-        #    while True:
-        #        ch = sys.stdin.read(1)
-        #        if ch == 'j':
-        #            self._increase_angle()
-        #        elif ch == 'k':
-        #            self._decrease_angle()
-        #        elif ch == 'q':
-        #            break
-        #finally:
-        #    termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-
 
     def _increase_angle(self):
         self.angle += 0.1
@@ -56,6 +41,7 @@ class CalibrationInterface():
 
     def _send_angle(self):
         self.queue.put("M2 A%f" % self.angle)
+        self.queue.put("M3")
 
     def _increase_position(self):
         self.position += 1

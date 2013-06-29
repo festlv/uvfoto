@@ -48,7 +48,7 @@ void laser_load_data(uint8_t * data_in, uint8_t * data_out) {
                 if (!position_printed) {
                     printf("#first pos: ");
                     printf("pos: %f, angle: %f, tmppos: %f ", offset, angle, tmppos);
-                    printf("pixel: %d, freq:%ld \n", i, SPI_FREQUENCY);
+                    printf("pixel: %d\n", i);
                     position_printed = 1;
                 }
             }

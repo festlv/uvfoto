@@ -19,7 +19,7 @@
 //length of data_out array has to be equal to ANGULAR_DATA_SIZE
 void laser_load_data(uint8_t * data_in, uint8_t * data_out);
 
-#define IMAGE_HALF 1100
+#define IMAGE_HALF 1050
 
 #define ANGULAR_DATA_SIZE 512 
 #define ANGULAR_RESOLUTION (ANGULAR_DATA_SIZE * 8.0)
@@ -30,16 +30,11 @@ void laser_set_start_angle(float angle);
 void laser_generate_calibration_data(uint8_t * data);
 void laser_calibration_point_set_position(uint8_t* data, float position);
 
-#define USEFUL_ANGLE 90.0
+#define USEFUL_ANGLE 70.0
 
 
 //delta between two angle-steps
 #define ANGLE_DIFF (USEFUL_ANGLE / ANGULAR_RESOLUTION)
-
-//us
-#define AVG_ROT_TIME 5120
-
-#define SPI_FREQUENCY ((uint32_t) (1000000.0 / (AVG_ROT_TIME/ ANGULAR_RESOLUTION)))
 
 //length of mirror side
 #define A 70.0

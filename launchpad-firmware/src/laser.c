@@ -107,11 +107,11 @@ static void laser_write_bit() {
     }
     bit_mask = bit_mask << 1;
     if (bit_mask == 0) {
+        bit_mask = 1;
         data_index++;
         if (data_index >= ANGULAR_DATA_SIZE) {
             TimerDisable(TIMER3_BASE, TIMER_A);
             data_index=0;
-            bit_mask=1;
         }
     }
 }
@@ -138,7 +138,7 @@ static void laser_setup_bit_timer(int rotation_period) {
     float period_in_s = rotation_period / 1000000.0;
     float time_per_bit = period_in_s / (ANGULAR_DATA_SIZE*8);
     uint8_t timer_value = (uint8_t)(time_per_bit * SysCtlClockGet());
-
+    printf("Timer value: %d\n", timer_value);
     TimerLoadSet(TIMER3_BASE, TIMER_A, timer_value);
 }
 
