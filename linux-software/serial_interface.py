@@ -10,12 +10,13 @@ class PrinterSerialInterface(object):
         self.sending_queue = Queue.Queue()
         self.receiving_queue = Queue.Queue()
         self.port = port
+        self._quit_flag = False
+
         self.thread = threading.Thread(
             target=self.serial_worker)
         self.thread.setDaemon(True)
         self.thread.start()
 
-        self._quit_flag = False
 
     def send_command(self, cmd, block=False):
         if not cmd.endswith('\n'):
@@ -43,7 +44,7 @@ class PrinterSerialInterface(object):
             while not self._quit_flag:
                 try:
                     msg = self.sending_queue.get(False)
-                    print("$ %s" % msg)
+                    #print("$ %s" % msg)
                     ser.write(msg)
                 except Queue.Empty:
                     pass

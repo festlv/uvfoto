@@ -13,6 +13,10 @@ MM_TO_PIX = (
 )
 
 
+class PrinterException(Exception):
+    pass
+
+
 class PrinterInterface():
     serial = None
     angle = 17.0
@@ -20,6 +24,9 @@ class PrinterInterface():
     bytestr_length = 400
 
     def _setup_serial(self, args):
+        if not args.port:
+            raise PrinterException("Serial port is required!")
+
         self.serial = PrinterSerialInterface(args.port)
 
     def home(self, args):
@@ -27,14 +34,15 @@ class PrinterInterface():
         self.serial.send_command("G28", block=True)
         self.serial.quit()
 
-    def _source_to_target_pixel(self, pixel_num, dpi):
+    def _source_to_target_pixel(self, pixel_num, dpi, offset):
         #first, convert the source pixel num to mm
-        source_pixel_mm = (pixel_num / float(dpi)) * 25.4
+        source_pixel_mm = (pixel_num / float(dpi)) * 25.4 + offset
         #then, perform a linear interpolation
         return numpy.interp(source_pixel_mm, MM_TO_PIX[0], MM_TO_PIX[1])
 
     def process_file(self, args):
         """Processes printable file, returns G-code-like file in memory"""
+
         filename = args.filename
         converted_image = cStringIO.StringIO()
         dpi = 400
@@ -52,6 +60,8 @@ class PrinterInterface():
 
         gcode_output = cStringIO.StringIO()
         gcode_x_increment_mm = (1.0 / dpi) * 25.4
+        offset_top = args.offset_top or 0.0
+        offset_left = args.offset_left or 0.0
 
         for i in xrange(img_size_y):
             row = "M3 B"
@@ -63,7 +73,9 @@ class PrinterInterface():
                 if p[0] == 0 and p[3] == 255:
                     use_row = True
                     #we have a black pixel
-                    target_pixel = int(self._source_to_target_pixel(j, dpi))
+                    target_pixel = int(
+                        self._source_to_target_pixel(j, dpi, offset_left)
+                    )
                     target_byte = target_pixel / 8
                     target_mask = 1 << (target_pixel % 8)
                     buf[target_byte] = buf[target_byte] | target_mask
@@ -71,16 +83,30 @@ class PrinterInterface():
             if use_row:
                 row += ''.join([chr(b) for b in buf]) + '\n'
 
-                gcode_output.write("G1 X%f\n" % (i * gcode_x_increment_mm))
+                gcode_output.write("G1 X%f\n" % (
+                    offset_top + i * gcode_x_increment_mm))
                 gcode_output.write(row)
-
-
 
         return gcode_output
 
-    def run_print(self, args):
+    def prepare(self, args):
         gcode_f = self.process_file(args)
-        print(gcode_f.getvalue())
+        if args.output:
+            f = open(args.output, 'w')
+            f.write(gcode_f.getvalue())
+        else:
+            print(gcode_f.getvalue())
+
+    def send(self, args):
+        self._setup_serial(args)
+        gcode_f = open(args.filename, 'r')
+
+        gcode_lines = gcode_f.read().split('\n')
+        i = 0
+        for l in gcode_lines:
+            i += 1
+            print("Sending: %d/%d\n" % (i, len(gcode_lines)))
+            self.serial.send_command(l + '\n', block=True)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -92,29 +118,41 @@ if __name__ == "__main__":
     parser_home = subparsers.add_parser('home', help="Move to home location")
     parser_home.set_defaults(func=p.home)
 
-    parser_print = subparsers.add_parser('print', help="Print an image")
-    parser_print.set_defaults(func=p.run_print)
+    parser_print = subparsers.add_parser(
+        'prepare', help="Prepare an image for printing")
+    parser_print.set_defaults(func=p.prepare)
+
+    parser_send = subparsers.add_parser(
+        'send', help="Sends G-code file to exponer")
+
+    parser_send.set_defaults(func=p.send)
+    parser_send.add_argument("filename", help="G-code file to send to exponer")
+
     parser_print.add_argument("filename", help="Image file to print")
+
     parser_print.add_argument(
-        "--dpi",
+        "--output",
+        help="Filename to save G-code to (defaults to stdout)")
+
+    parser_print.add_argument(
+        "--dpi", type=int,
         help="DPI of the image file (only relevant for non-SVG files")
 
     parser_print.add_argument(
-        "--intensity",
+        "--intensity", type=int,
         help="Intensity of laser beam (0-255)")
 
     parser_print.add_argument(
-        "--offset-left",
+        "--offset-left", type=float,
         help="Offset from left side, mm")
 
     parser_print.add_argument(
-        "--offset-top",
+        "--offset-top", type=float,
         help="Offset from top, mm")
 
     parser_print.add_argument(
-        "--center",
+        "--center", type=bool,
         help="Center the image from left-to-right")
 
     args = parser.parse_args()
     args.func(args)
-    #c.run(args.port)
