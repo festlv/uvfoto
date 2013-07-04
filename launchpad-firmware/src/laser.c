@@ -1,5 +1,4 @@
 #include "laser.h"
-#include "laser_data.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -17,15 +16,12 @@
 #include "driverlib/timer.h"
 #include "driverlib/uart.h"
 #include "driverlib/ssi.h"
-#include "driverlib/udma.h"
 
 
 #include "systick.h"
 
-uint8_t ssi_data[ANGULAR_DATA_SIZE];
+uint8_t ssi_data[LASER_DATA_LENGTH];
 
-uint8_t data_tmp[LASER_DATA_LENGTH];
-static uint8_t udma_control_table[1024] __attribute__((aligned(1024)));
 
 //store last NUM_AVERAGE_TIME times between start of line interrupts
 #define NUM_AVERAGE_TIME 10
@@ -39,15 +35,19 @@ volatile unsigned int edge_count=0;
 
 static void start_of_line_handler();
 
-/*    
-static void laser_launch_dma() {
-    uDMAChannelDisable(UDMA_CHANNEL_SSI0TX);
-    uDMAChannelTransferSet(UDMA_CHANNEL_SSI0TX, UDMA_MODE_BASIC, ssi_data,
-            (void *)(SSI0_BASE + SSI_O_DR), ANGULAR_DATA_SIZE); 
+void laser_load_data(uint8_t * data, uint16_t length) {
+    uint16_t read_length;
 
-    uDMAChannelEnable(UDMA_CHANNEL_SSI0TX);
+    read_length = length > LASER_DATA_LENGTH ? LASER_DATA_LENGTH : length;
+    uint16_t i;
+    for (i=0;i<read_length;i++)
+        ssi_data[i] = data[i];
+    if (i != (LASER_DATA_LENGTH -1)) {
+        for (int j=i+1;j < LASER_DATA_LENGTH; j++)
+            ssi_data[j] = 0xff;
+    }
 }
-*/
+
 static void init_start_of_line_interrupt() {
     //start of line interrupt on PB5
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
@@ -63,37 +63,11 @@ static void laser_init_pwm() {
     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_1, 0xff);
 }
 
-static void laser_init_ssi() {
-/*    //sets up SSI to transfer data bit-by-bit (to pulse laser)
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
-    SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_TI,
-            SSI_MODE_MASTER, SPI_FREQUENCY, 8);
-
-    SSIEnable(SSI0_BASE);
-    */
-    //set PA5 as TX for SSI
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
-    GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE, GPIO_PIN_5);
-    //GPIOPinConfigure(GPIO_PA5_SSI0TX);
-    //SSIDMAEnable(SSI0_BASE, SSI_DMA_TX);
-
-}
-
 void laser_step() {
     if (systick_get_count() % SYSTICK_FREQ ==0) {
         edge_count=0;
     }
 }
-/*
-static void laser_init_dma() {
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_UDMA);
-    uDMAEnable();
-    uDMAControlBaseSet(udma_control_table);    
-    //channel 11, SSI0TX
-    uDMAChannelAssign(UDMA_CHANNEL_SSI0TX);
-    uDMAChannelControlSet(UDMA_CHANNEL_SSI0TX | UDMA_PRI_SELECT, UDMA_SIZE_8 | UDMA_ARB_4 | UDMA_SRC_INC_8 | UDMA_DST_INC_NONE);
-}
-*/
 
 static void laser_write_bit() {
     static volatile uint16_t data_index = 0;
@@ -101,16 +75,18 @@ static void laser_write_bit() {
     TimerIntClear(TIMER3_BASE, TIMER_TIMA_TIMEOUT);
 
     if (ssi_data[data_index] & bit_mask) {
-        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_5, 0xff);    
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_5, 0x00);    
     } else {
-        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_5, 0x00);
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_5, 0xff);
     }
+
     bit_mask = bit_mask << 1;
     if (bit_mask == 0) {
         bit_mask = 1;
         data_index++;
-        if (data_index >= ANGULAR_DATA_SIZE) {
+        if (data_index >= (LASER_DATA_LENGTH - 100)) {
             TimerDisable(TIMER3_BASE, TIMER_A);
+            GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_5, 0xff);
             data_index=0;
         }
     }
@@ -136,17 +112,18 @@ static void laser_init_timers() {
 static void laser_setup_bit_timer(int rotation_period) {
     //calculate delay between bits according to rotation period
     float period_in_s = rotation_period / 1000000.0;
-    float time_per_bit = period_in_s / (ANGULAR_DATA_SIZE*8);
+    float time_per_bit = period_in_s / (LASER_DATA_LENGTH*8);
     uint8_t timer_value = (uint8_t)(time_per_bit * SysCtlClockGet());
     printf("Timer value: %d\n", timer_value);
     TimerLoadSet(TIMER3_BASE, TIMER_A, timer_value);
 }
 
 void laser_init() {
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+    GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE, GPIO_PIN_5);
+ 
     laser_init_timers();
     init_start_of_line_interrupt();
-    laser_init_ssi();
-    //laser_init_dma();
     laser_init_pwm();
 }
 
@@ -201,14 +178,33 @@ static void start_of_line_handler() {
     }
 }
 
+//generates an alternating pattern of 16mm long segments
+//expects pre-allocated array
 void laser_load_calibration_data() {
-    //generates an alternating pattern of 16mm long segments
-    laser_generate_calibration_data(data_tmp);
-    laser_load_data(data_tmp, ssi_data);
+    for (int i=0;i<LASER_DATA_LENGTH;i++)
+        ssi_data[i] = 0x00;
+    
+    int i=0;
+    while (i < LASER_DATA_LENGTH) {
+        for (int j=0;j<10;j++) {
+            ssi_data[i+j] = 0xff;
+        }
+        i+= 20;
+    }
 }
 
+void laser_set_calibration_point(int start_bit) {
+    
+    for (int i=0;i<LASER_DATA_LENGTH;i++)
+        ssi_data[i] = 0x00;
 
-void laser_calibration_set_point(float position) {
-    laser_calibration_point_set_position(data_tmp, position);
-    laser_load_data(data_tmp, ssi_data);
+    int byte, mask, tmp;
+
+    for (int i=0; i < 40; i++) {
+        tmp = i+start_bit;
+        byte = tmp / 8;
+        mask = (1 << (tmp % 8));
+        ssi_data[byte] = ssi_data[byte] & mask; 
+    }
 }
+

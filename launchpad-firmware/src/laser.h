@@ -32,6 +32,7 @@ void laser_init();
 //sets laser intensity- 0..255
 void laser_set_intensity(uint8_t intensity);
 
+void laser_load_data(uint8_t * data, uint16_t length);
 //enables painting of line when start of line input is triggered (on rising
 //edge)
 void laser_enable();
@@ -43,8 +44,8 @@ void laser_load_calibration_data();
 
 void laser_step();
 
-//enables drawing a calibration point- 0.8mm long strip at certain position
-//useful for debugging
-void laser_calibration_set_point(float position);
+void laser_set_calibration_point(int start_bit);
+
+#define LASER_DATA_LENGTH 512
 
 #endif

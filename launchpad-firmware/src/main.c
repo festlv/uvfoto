@@ -35,7 +35,7 @@ int main(void) {
     laser_init();
     stepper_init();
     //initialize ssi data
-    laser_calibration_set_point(150.0);
+    laser_load_calibration_data();
     laser_enable();
     while(1)
     {

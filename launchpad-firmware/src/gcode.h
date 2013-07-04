@@ -8,9 +8,8 @@
 //G92 - alias of G92 X0
 //
 //
-//M1 Y%f - "draw" a calibration point at specified point
-//M2 A%f - set start angle (for calibration)
-//M3 - draw an alternating line of calibration strips
+//M1 - draw an alternating line of calibration strips
+//M2 Y%d - draw a calibration point starting at specified bit
 
 extern void gcode_step();
 
