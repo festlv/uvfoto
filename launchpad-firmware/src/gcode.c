@@ -11,14 +11,19 @@ static int16_t buffer_counter=0;
 void gcode_execute_command(char cmd, int command_num, char * command) {
     float tmppos;
     uint16_t tmppos_int;
+    uint8_t ok = 0;
+
     if (cmd=='G') {
         switch (command_num) {
             case 28:
                 stepper_move_to_origin();
+                ok=1;
                 break;
             case 1:
-                if (sscanf(command, "G1 X%f", &tmppos) == 1)
+                if (sscanf(command, "G1 X%f", &tmppos) == 1) {
                     stepper_move_position_blocking_def(tmppos);
+                    ok=1;
+                }
 
                 break;
             case 92:
@@ -26,36 +31,44 @@ void gcode_execute_command(char cmd, int command_num, char * command) {
                     stepper_set_position(tmppos);
                 else
                     stepper_set_position(0.0);
-                break;
-            default:
-                printf("Unsupported command!\n");
-                return;
 
-    }
+                ok=1;
+                break;
+
+        }
     } else if (cmd=='M') {
         switch(command_num) {
             case 1:
                 laser_load_calibration_data();
+                ok=1;
                 break;
             case 2:
-                if (sscanf(command, "M2 Y%hu", &tmppos_int)==1)
+                if (sscanf(command, "M2 Y%hu", &tmppos_int)==1) {
                     laser_set_calibration_point(tmppos_int);
+                    ok=1;
+                }
                 break;
             case 3:
                 break;
             case 4:
-                if (sscanf(command, "M4 S%hu", &tmppos_int)==1)
+                if (sscanf(command, "M4 S%hu", &tmppos_int)==1) {
                     laser_set_intensity((uint8_t)tmppos_int);
+                    ok=1;
+                }
                 break;
             case 5:
-                if (sscanf(command, "M5 S%hu", &tmppos_int)==1)
+                if (sscanf(command, "M5 S%hu", &tmppos_int)==1) {
                     laser_set_exposure_time(tmppos_int);
+                    ok=1;
+                }
                 break;
                 
             }
     }
-
-    printf("OK\n");
+    if (ok)
+        printf("OK\n");
+    else
+        printf("NOK\n");
 }
 
 
