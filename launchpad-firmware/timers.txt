@@ -1,5 +1,8 @@
 Timer usage:
-Laser printer motor: TIMER0A
-Laser pulse: TIMER3B
+Laser printer motor: TIMER0A (PWM)
+
+Laser pulse: TIMER3A
+Laser detector pulse filters: TIMER3B
+Laser intensity PWM: TIMER2B
 
 Stepper pulse: TIMER1A

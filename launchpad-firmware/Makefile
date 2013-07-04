@@ -8,6 +8,7 @@ SOURCES    += startup.c
 SOURCES	   += motor.c
 SOURCES    += laser.c
 SOURCES    += syscalls.c
+SOURCES    += laser_intensity.c
 SOURCES    += stellariscommon.c
 SOURCES    += stepper.c
 SOURCES    += systick.c

@@ -1,4 +1,5 @@
 #include "laser.h"
+#include "laser_intensity.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -6,7 +7,6 @@
 #include "inc/hw_ints.h"
 #include "inc/hw_gpio.h"
 #include "inc/hw_memmap.h"
-#include "inc/hw_ssi.h"
 #include "inc/hw_sysctl.h"
 #include "inc/hw_types.h"
 #include "driverlib/gpio.h"
@@ -14,8 +14,6 @@
 #include "driverlib/sysctl.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/timer.h"
-#include "driverlib/uart.h"
-#include "driverlib/ssi.h"
 
 
 #include "systick.h"
@@ -58,11 +56,6 @@ static void init_start_of_line_interrupt() {
     GPIOIntEnable(GPIO_PORTB_BASE, GPIO_INT_PIN_5);
 }
 
-static void laser_init_pwm() {
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
-    GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, GPIO_PIN_1);
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_1, 0xff);
-}
 
 void laser_step() {
     if (systick_get_count() % SYSTICK_FREQ ==0) {
@@ -125,13 +118,14 @@ void laser_init() {
  
     laser_init_timers();
     init_start_of_line_interrupt();
-    laser_init_pwm();
+    laser_init_intensity_output();
 }
 
 
 
 void laser_set_intensity(uint8_t intensity) {
     laser_intensity = intensity;
+    laser_set_intensity_output(intensity);
 }
 
 void laser_enable() {
