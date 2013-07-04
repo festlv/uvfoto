@@ -30,6 +30,12 @@ static volatile uint8_t laser_enabled = 0;
 static volatile uint8_t laser_intensity=255;
 static volatile uint16_t laser_exposure_time=1000;
 
+static volatile uint16_t laser_ms_per_rotation=0;
+
+//when laser is enabled, it is active for up to laser_num_rotations
+static volatile uint16_t laser_max_enabled_rotations;
+static volatile uint16_t laser_current_rotations;
+
 volatile unsigned int edge_count=0;
 
 static void start_of_line_handler();
@@ -110,6 +116,11 @@ static void laser_setup_bit_timer(int rotation_period) {
     uint8_t timer_value = (uint8_t)(time_per_bit * SysCtlClockGet());
     printf("Timer value: %d\n", timer_value);
     TimerLoadSet(TIMER3_BASE, TIMER_A, timer_value);
+
+
+    //save ms per rotation, so we can use number of rotation cycles to 
+    //calculate how long have we been exposing the plate
+    laser_ms_per_rotation = rotation_period / 1000;
 }
 
 void laser_init() {
@@ -129,7 +140,10 @@ void laser_set_intensity(uint8_t intensity) {
 }
 
 void laser_enable() {
+    laser_max_enabled_rotations = laser_exposure_time / laser_ms_per_rotation;
+    laser_current_rotations = 0;
     laser_enabled = 1;
+
 }
 
 void laser_disable() {
@@ -145,8 +159,11 @@ static void start_of_line_handler() {
 
     volatile int tmp = TimerValueGet(TIMER3_BASE, TIMER_B);
     if (((timer_prev_value - tmp) > 5000) || ((timer_prev_value - tmp) < 0)) {
-        if (laser_enabled)
+        if (laser_enabled && laser_current_rotations < laser_max_enabled_rotations) {
+            laser_current_rotations++;
             TimerEnable(TIMER3_BASE, TIMER_A);
+
+        }
         edge_count++;
     }
     if (compute_average) {
