@@ -10,7 +10,7 @@ static int16_t buffer_counter=0;
 
 void gcode_execute_command(char cmd, int command_num, char * command) {
     float tmppos;
-    int tmppos_int;
+    uint16_t tmppos_int;
     if (cmd=='G') {
         switch (command_num) {
             case 28:
@@ -38,9 +38,20 @@ void gcode_execute_command(char cmd, int command_num, char * command) {
                 laser_load_calibration_data();
                 break;
             case 2:
-                if (sscanf(command, "M2 Y%d", &tmppos_int)==1)
+                if (sscanf(command, "M2 Y%hu", &tmppos_int)==1)
                     laser_set_calibration_point(tmppos_int);
                 break;
+            case 3:
+                break;
+            case 4:
+                if (sscanf(command, "M4 S%hu", &tmppos_int)==1)
+                    laser_set_intensity((uint8_t)tmppos_int);
+                break;
+            case 5:
+                if (sscanf(command, "M5 S%hu", &tmppos_int)==1)
+                    laser_set_exposure_time(tmppos_int);
+                break;
+                
             }
     }
 

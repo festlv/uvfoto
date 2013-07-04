@@ -32,6 +32,9 @@ void laser_init();
 //sets laser intensity- 0..255
 void laser_set_intensity(uint8_t intensity);
 
+//sets laser exposure time in ms
+void laser_set_exposure_time(uint16_t exposure_time);
+
 void laser_load_data(uint8_t * data, uint16_t length);
 //enables painting of line when start of line input is triggered (on rising
 //edge)

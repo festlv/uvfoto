@@ -30,6 +30,7 @@ volatile unsigned int timer_values[NUM_AVERAGE_TIME];
 
 static volatile uint8_t laser_enabled = 0;
 static volatile uint8_t laser_intensity=255;
+static volatile uint16_t laser_exposure_time=1000;
 
 volatile unsigned int edge_count=0;
 
@@ -208,3 +209,6 @@ void laser_set_calibration_point(int start_bit) {
     }
 }
 
+void laser_set_exposure_time(uint16_t exposure_time) {
+   laser_exposure_time = exposure_time; 
+}
