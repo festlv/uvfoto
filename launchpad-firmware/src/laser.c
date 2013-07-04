@@ -134,13 +134,9 @@ void laser_init() {
 
 
 
-void laser_set_intensity(uint8_t intensity) {
-    laser_intensity = intensity;
-    laser_set_intensity_output(intensity);
-}
-
 void laser_enable() {
     laser_max_enabled_rotations = laser_exposure_time / laser_ms_per_rotation;
+    printf("Laser enabled for %d rotations\n", laser_max_enabled_rotations);
     laser_current_rotations = 0;
     laser_enabled = 1;
 
@@ -222,4 +218,10 @@ void laser_set_calibration_point(int start_bit) {
 
 void laser_set_exposure_time(uint16_t exposure_time) {
    laser_exposure_time = exposure_time; 
+   printf("Laser exposure time set to: %d\n", laser_exposure_time);
+}
+void laser_set_intensity(uint8_t intensity) {
+    laser_intensity = intensity;
+    laser_set_intensity_output(intensity);
+    printf("Laser intensity set to: %d", intensity);
 }
